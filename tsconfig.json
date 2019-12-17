@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "es6",
+    "target": "es5"
+  },
+  "files": [
+    "node_modules/phaser/types/phaser.d.ts"
+  ]
+}

@@ -40,7 +40,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create () {
-    this.add.grid(0, this.tileSize / 2, 480, 640, this.tileSize, this.tileSize, 0x000000, 1, 0xffffff, 1)
+    this.add.grid(-this.tileSize * 1.5, -this.tileSize * 1.5, (this.size + 2) * this.tileSize, (this.size + 2) * this.tileSize, this.tileSize, this.tileSize, 0x000000, 1, 0xffffff, 1).setOrigin(0, 0)
 
     for (let column = 0; column < this.size; column++) {
       const spriteRow = []

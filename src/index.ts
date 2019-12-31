@@ -5,8 +5,8 @@ import MainScene from './scenes/main'
 class Game extends Phaser.Game {
   constructor () {
     super({
-      width: 800,
-      height: 400,
+      width: 480,
+      height: 640,
       parent: 'app',
       scene: [
         MainScene

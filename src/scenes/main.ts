@@ -122,8 +122,6 @@ export default class MainScene extends Phaser.Scene {
   }
 
   onDrag (pointer, sprite, dragX, dragY) {
-    const currentDirection = this.direction
-
     const deltaX = (dragX - this.dragging.x) / this.zoomFactor
     const deltaY = (dragY - this.dragging.y) / this.zoomFactor
     const absDeltaX = Math.floor(Math.abs(deltaX))
@@ -146,26 +144,32 @@ export default class MainScene extends Phaser.Scene {
       return
     }
 
+    let deltaFinal
     switch (this.direction) {
       case Direction.Right:
       case Direction.Left: {
         sprite.x = this.dragging.sprite.x + deltaX
         sprite.y = this.dragging.sprite.y
+
+        deltaFinal = absDeltaX
         break
       }
       case Direction.Down:
       case Direction.Up: {
         sprite.y = this.dragging.sprite.y + deltaY
         sprite.x = this.dragging.sprite.x
+
+        deltaFinal = absDeltaY
         break
       }
     }
 
-    if (this.direction !== currentDirection) {
-      this.resetAdjacents()
-    } else {
+    if (deltaFinal / this.tileSize > 0.5) {
       adjacent.sprite.x = this.dragging.sprite.x
       adjacent.sprite.y = this.dragging.sprite.y
+    } else {
+      adjacent.sprite.x = adjacent.x
+      adjacent.sprite.y = adjacent.y
     }
   }
 
@@ -174,16 +178,8 @@ export default class MainScene extends Phaser.Scene {
     sprite.x = this.dragging.sprite.x
     sprite.y = this.dragging.sprite.y
 
-    this.resetAdjacents()
-  }
-
-  private resetAdjacents () {
-    for (const direction in Direction) {
-      const adjacent = this.dragging.adjacent[Direction[direction]]
-      if (adjacent) {
-        adjacent.sprite.x = adjacent.x
-        adjacent.sprite.y = adjacent.y
-      }
-    }
+    const adjacent = this.dragging.adjacent[this.direction]
+    adjacent.sprite.x = adjacent.x
+    adjacent.sprite.y = adjacent.y
   }
 }

@@ -9,8 +9,7 @@ export default class MainScene extends Phaser.Scene {
   private size = 4
   private tileSize = 32
   private zoomFactor = 1.5
-  private level: Emoji[][] = []
-  private openEmojis: Emoji[] = []
+  private openedEmojis: Emoji[][] = [[]]
 
   preload () {
     // 42 columns * 44 rows
@@ -28,52 +27,50 @@ export default class MainScene extends Phaser.Scene {
     }, []))
 
     for (let column = 0; column < this.size; column++) {
-      const spriteRow = []
       for (let row = 0; row < this.size; row++) {
+        const actualFrame = shuffledTiles[(column * this.size) + row]
         const sprite = new Emoji({
           scene: this,
-          x: column * this.tileSize,
-          y: row * this.tileSize,
-          actualFrame: shuffledTiles[(column * this.size) + row]
+          tileX: column,
+          tileY: row,
+          tileSize: this.tileSize,
+          actualFrame
         })
 
-        spriteRow.push(sprite)
+        sprite.setInteractive().on('pointerdown', () => this.onPointerDown.call(this, sprite))
       }
-
-      this.level.push(spriteRow)
     }
 
     this.cameras.main.centerOn(this.tileSize / 2 * (this.size - 1), this.tileSize / 2 * (this.size - 1)).setZoom(this.zoomFactor)
-    this.input.on('pointerdown', this.onPointerDown.bind(this))
   }
 
-  onPointerDown (pointer, sprites,  dragX, dragY) {
-    const emoji = sprites[0]
-    if (emoji instanceof Emoji) {
-      const similarEmojis = this.openEmojis.filter((openEmoji) => emoji.actualFrame === openEmoji.actualFrame)
+  onPointerDown (emoji: Emoji) {
+    const lastOpenedEmojis = this.openedEmojis[this.openedEmojis.length - 1]
 
-      if (similarEmojis.length >= 2) {
-        return
+    if (!lastOpenedEmojis.length) {
+      lastOpenedEmojis.push(emoji)
+    } else {
+      const lastOpenedEmoji = lastOpenedEmojis[0]
+      if (emoji.isOpened) {
+        lastOpenedEmojis.pop()
+      } else if (lastOpenedEmoji.actualFrame === emoji.actualFrame) {
+        lastOpenedEmoji.off('pointerdown')
+        emoji.off('pointerdown')
+
+        lastOpenedEmojis.push(emoji)
+        this.openedEmojis.push([])
+      } else {
+        this.input.enabled = false
+        this.time.delayedCall(500, () => {
+          lastOpenedEmoji.toggle()
+          emoji.toggle()
+          lastOpenedEmojis.pop()
+
+          this.input.enabled = true
+        })
       }
-
-      emoji.toggle()
-
-      const lastOpenedEmoji = this.openEmojis[this.openEmojis.length - 1]
-      if (similarEmojis[0] || this.openEmojis.length % 2 === 0) {
-        this.openEmojis.push(emoji)
-        return
-      }
-
-      // Disallow clicking momentarily
-      // since we have to show the opened sprites for a while
-      this.input.enabled = false
-      this.openEmojis.pop()
-
-      this.time.delayedCall(500, () => {
-        lastOpenedEmoji.toggle()
-        emoji.toggle()
-        this.input.enabled = true
-      })
     }
+
+    emoji.toggle()
   }
 }

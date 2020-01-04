@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Emoji from '../sprites/emoji'
+import UIScene from './ui'
 
 export default class MainScene extends Phaser.Scene {
   constructor () {
@@ -11,6 +12,12 @@ export default class MainScene extends Phaser.Scene {
   private zoomFactor = 1.5
   private openedEmojis: Emoji[][] = [[]]
 
+  get score () {
+    const foo = Math.floor(this.openedEmojis.length / 2)
+    console.log(foo)
+    return foo
+  }
+
   preload () {
     // 42 columns * 44 rows
     // https://github.com/Deveo/emojione-png-sprites
@@ -21,10 +28,12 @@ export default class MainScene extends Phaser.Scene {
     const shuffledEmojis = Phaser.Math.RND.shuffle(Array.from({length: 42 * 44}, (v, i) => i))
       .slice(0, Math.pow(this.size, 2) / 2)
 
-    const shuffledTiles = Phaser.Math.RND.shuffle(shuffledEmojis.reduce((tiles, number, idx) => {
+    const tiles = shuffledEmojis.reduce((tiles, number, idx) => {
       tiles.push(shuffledEmojis[idx], shuffledEmojis[idx])
       return tiles
-    }, []))
+    }, [])
+
+    const shuffledTiles = Phaser.Math.RND.shuffle(tiles)
 
     for (let column = 0; column < this.size; column++) {
       for (let row = 0; row < this.size; row++) {
@@ -41,6 +50,7 @@ export default class MainScene extends Phaser.Scene {
       }
     }
 
+    this.scene.add('UIScene', UIScene, true, { openedEmojis: this.openedEmojis })
     this.cameras.main.centerOn(this.tileSize / 2 * (this.size - 1), this.tileSize / 2 * (this.size - 1)).setZoom(this.zoomFactor)
   }
 

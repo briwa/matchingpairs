@@ -7,15 +7,23 @@ export default class MainScene extends Phaser.Scene {
     super({ key: 'MainScene' })
   }
 
-  private size = 4
+  public openedEmojis: Emoji[][] = [[]]
+  public size = 4
   private tileSize = 32
-  private zoomFactor = 1.5
-  private openedEmojis: Emoji[][] = [[]]
+  private zoomFactor = 3
+  private group: Phaser.GameObjects.Group
 
   get score () {
     const foo = Math.floor(this.openedEmojis.length / 2)
     console.log(foo)
     return foo
+  }
+
+
+  resetLevel () {
+    this.group.children.each((child) => child.destroy())
+    this.openedEmojis = [[]]
+    this.setupLevel()
   }
 
   preload () {
@@ -25,36 +33,13 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create () {
-    const shuffledEmojis = Phaser.Math.RND.shuffle(Array.from({length: 42 * 44}, (v, i) => i))
-      .slice(0, Math.pow(this.size, 2) / 2)
-
-    const tiles = shuffledEmojis.reduce((tiles, number, idx) => {
-      tiles.push(shuffledEmojis[idx], shuffledEmojis[idx])
-      return tiles
-    }, [])
-
-    const shuffledTiles = Phaser.Math.RND.shuffle(tiles)
-
-    for (let column = 0; column < this.size; column++) {
-      for (let row = 0; row < this.size; row++) {
-        const actualFrame = shuffledTiles[(column * this.size) + row]
-        const sprite = new Emoji({
-          scene: this,
-          tileX: column,
-          tileY: row,
-          tileSize: this.tileSize,
-          actualFrame
-        })
-
-        sprite.setInteractive().on('pointerdown', () => this.onPointerDown.call(this, sprite))
-      }
-    }
-
-    this.scene.add('UIScene', UIScene, true, { openedEmojis: this.openedEmojis })
     this.cameras.main.centerOn(this.tileSize / 2 * (this.size - 1), this.tileSize / 2 * (this.size - 1)).setZoom(this.zoomFactor)
+    this.scene.add('UIScene', UIScene, true, { parent: this })
+
+    this.setupLevel()
   }
 
-  onPointerDown (emoji: Emoji) {
+  private onPointerDown (emoji: Emoji) {
     const lastOpenedEmojis = this.openedEmojis[this.openedEmojis.length - 1]
 
     if (!lastOpenedEmojis.length) {
@@ -82,5 +67,35 @@ export default class MainScene extends Phaser.Scene {
     }
 
     emoji.toggle()
+  }
+
+  private setupLevel () {
+    this.group = this.group || this.add.group()
+
+    const shuffledEmojis = Phaser.Math.RND.shuffle(Array.from({length: 42 * 44}, (v, i) => i))
+      .slice(0, Math.pow(this.size, 2) / 2)
+
+    const tiles = shuffledEmojis.reduce((tiles, number, idx) => {
+      tiles.push(shuffledEmojis[idx], shuffledEmojis[idx])
+      return tiles
+    }, [])
+
+    const shuffledTiles = Phaser.Math.RND.shuffle(tiles)
+
+    for (let column = 0; column < this.size; column++) {
+      for (let row = 0; row < this.size; row++) {
+        const actualFrame = shuffledTiles[(column * this.size) + row]
+        const sprite = new Emoji({
+          scene: this,
+          tileX: column,
+          tileY: row,
+          tileSize: this.tileSize,
+          actualFrame
+        })
+
+        sprite.setInteractive().on('pointerdown', () => this.onPointerDown.call(this, sprite))
+        this.group.add(sprite)
+      }
+    }
   }
 }

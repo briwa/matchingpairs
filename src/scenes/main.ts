@@ -10,7 +10,7 @@ export default class MainScene extends Phaser.Scene {
   public openedEmojis: Emoji[][] = [[]]
   public size = 4
   private tileSize = 32
-  private zoomFactor = 3
+  private zoomFactor = 2
   private group: Phaser.GameObjects.Group
 
   get score () {

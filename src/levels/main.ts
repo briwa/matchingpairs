@@ -1,5 +1,10 @@
+interface Tile {
+  idx: number
+  tile: number
+}
+
 export default class MainLevel {
-  public openedTileIndices: number[][]
+  public openedTiles: { idx: number, tile: number }[][]
   private size: number
   private tiles: number[]
 
@@ -8,7 +13,7 @@ export default class MainLevel {
   }
 
   create () {
-    this.openedTileIndices = [[]]
+    this.openedTiles = [[]]
     this.tiles = []
 
     const allTilesCount = 45
@@ -30,35 +35,35 @@ export default class MainLevel {
     return this.tiles
   }
 
-  toggleTile (tileIdx: number) {
-    const lastopenedTileIndices = this.openedTileIndices[this.openedTileIndices.length - 1]
-    const lastOpened = {
-      idx: lastopenedTileIndices[0],
-      tile: this.tiles[lastopenedTileIndices[0]]
-    }
+  toggleTile (tileIdx: number): { current: Tile, shouldOpen: boolean, lastOpened?: Tile, isPaired?: boolean } {
+    const lastopenedTiles = this.openedTiles[this.openedTiles.length - 1]
+    const lastOpened = lastopenedTiles[0]
     const current = {
       idx: tileIdx,
-      tile: this.tiles[tileIdx],
-      shouldOpen: lastOpened.idx !== tileIdx
+      tile: this.tiles[tileIdx]
     }
 
-    const isPaired = typeof lastOpened.tile !== 'undefined'
-      && current.shouldOpen
-      && lastOpened.tile === current.tile
+    let shouldOpen = true
 
-    if (!lastopenedTileIndices.length) {
-      lastopenedTileIndices.push(current.idx)
+    if (!lastOpened) {
+      lastopenedTiles.push(current)
+
+      return { current, shouldOpen }
+    }
+
+    shouldOpen = current.idx !== lastOpened.idx
+    const isPaired = shouldOpen && lastOpened.tile === current.tile
+
+    if (current.idx !== lastOpened.idx && lastOpened.tile === current.tile) {
+      lastopenedTiles.push(current)
+      this.openedTiles.push([])
     } else {
-      if (isPaired) {
-        lastopenedTileIndices.push(current.idx)
-        this.openedTileIndices.push([])
-      } else {
-        lastopenedTileIndices.pop()
-      }
+      lastopenedTiles.pop()
     }
 
     return {
       current,
+      shouldOpen,
       lastOpened,
       isPaired
     }

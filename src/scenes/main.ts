@@ -8,9 +8,9 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public level: MainLevel
-  public size = 8
+  public size = 4
   private tileSize = 64
-  private zoomFactor = 0.75
+  private zoomFactor = 1
   private closedFrame = 45
   private group: Phaser.GameObjects.Group
 
@@ -37,25 +37,28 @@ export default class MainScene extends Phaser.Scene {
     const tileX = Math.floor(sprite.x / this.tileSize)
     const tileY = Math.floor(sprite.y / this.tileSize)
     const tileIdx = (tileY * this.size) + tileX
-    const { current, lastOpened, isPaired } = this.level.toggleTile(tileIdx)
-    const lastOpenedSprite = this.group.getChildren()[lastOpened.idx] as Phaser.GameObjects.Sprite
+    const { current, lastOpened, shouldOpen, isPaired } = this.level.toggleTile(tileIdx)
 
-    if (isPaired) {
-      sprite.off('pointerdown')
-      lastOpenedSprite.off('pointerdown')
-    } else if (lastOpenedSprite && current.shouldOpen) {
-      this.input.enabled = false
-      this.time.delayedCall(500, () => {
-        lastOpenedSprite.setFrame(this.closedFrame)
-        sprite.setFrame(this.closedFrame)
-        this.input.enabled = true
-      })
-    }
-
-    if (current.shouldOpen) {
+    if (shouldOpen) {
       sprite.setFrame(current.tile)
     } else {
       sprite.setFrame(this.closedFrame)
+    }
+
+    if (lastOpened) {
+      const lastOpenedSprite = this.group.getChildren()[lastOpened.idx] as Phaser.GameObjects.Sprite
+
+      if (isPaired) {
+        sprite.off('pointerdown')
+        lastOpenedSprite.off('pointerdown')
+      } else if (shouldOpen) {
+        this.input.enabled = false
+        this.time.delayedCall(500, () => {
+          lastOpenedSprite.setFrame(this.closedFrame)
+          sprite.setFrame(this.closedFrame)
+          this.input.enabled = true
+        })
+      }
     }
   }
 

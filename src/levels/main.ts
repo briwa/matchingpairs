@@ -1,52 +1,70 @@
-import Phaser from 'phaser'
-import Emoji from '../sprites/emoji'
-
 export default class MainLevel {
-  public openedEmojis: Emoji[][] = [[]]
+  public openedTileIndices: number[][] = [[]]
   private size: number
+  private tiles: number[]
 
-  constructor(size) {
+  constructor (size) {
     this.size = size
   }
 
-  create() {
-    const shuffledEmojis = Phaser.Math.RND.shuffle(Array.from({length: 45}, (v, i) => i))
-      .slice(0, Math.pow(this.size, 2) / 2)
+  create () {
+    this.tiles = []
 
-    const tiles = shuffledEmojis.reduce((tiles, number, idx) => {
-      tiles.push(shuffledEmojis[idx], shuffledEmojis[idx])
-      return tiles
-    }, [])
+    const allTilesCount = 45
+    const allTiles = Array.from({length: allTilesCount}, (v, i) => i)
+    const maxUniqueTilesCount = this.size * 2
 
-    return Phaser.Math.RND.shuffle(tiles)
+    // TODO: Still not that random...
+    while (allTiles.length > allTilesCount - maxUniqueTilesCount) {
+      let pairCount = 2
+      const randomTileIdx = Math.floor(Math.random() * allTiles.length)
+      const randomTile = allTiles[randomTileIdx]
+      while (pairCount) {
+        const randomShuffledIdx = Math.floor(Math.random() * this.tiles.length)
+        this.tiles.splice(randomShuffledIdx, 0, randomTile)
+        pairCount--
+      }
+      allTiles.splice(randomTileIdx, 1)
+    }
+
+    return this.tiles
   }
 
   reset () {
-    this.openedEmojis = [[]]
+    this.openedTileIndices = [[]]
   }
 
-  toggleEmoji(emoji: Emoji) {
-    const lastOpenedEmojis = this.openedEmojis[this.openedEmojis.length - 1]
-    const lastOpenedEmoji = lastOpenedEmojis[0]
-    const paired = lastOpenedEmoji
-      && lastOpenedEmoji !== emoji
-      && lastOpenedEmoji.actualFrame === emoji.actualFrame
+  toggleTile (tileIdx: number) {
+    const lastopenedTileIndices = this.openedTileIndices[this.openedTileIndices.length - 1]
+    const lastOpened = {
+      idx: lastopenedTileIndices[0],
+      tile: this.tiles[lastopenedTileIndices[0]]
+    }
+    const current = {
+      idx: tileIdx,
+      tile: this.tiles[tileIdx],
+      shouldOpen: lastOpened.idx !== tileIdx
+    }
 
-    if (!lastOpenedEmojis.length) {
-      lastOpenedEmojis.push(emoji)
+    const isPaired = typeof lastOpened.tile !== 'undefined'
+      && current.shouldOpen
+      && lastOpened.tile === current.tile
+
+    if (!lastopenedTileIndices.length) {
+      lastopenedTileIndices.push(current.idx)
     } else {
-      if (paired) {
-        lastOpenedEmojis.push(emoji)
-        this.openedEmojis.push([])
+      if (isPaired) {
+        lastopenedTileIndices.push(current.idx)
+        this.openedTileIndices.push([])
       } else {
-        lastOpenedEmojis.pop()
+        lastopenedTileIndices.pop()
       }
     }
 
     return {
-      emoji,
-      lastOpenedEmoji,
-      paired
+      current,
+      lastOpened,
+      isPaired
     }
   }
 }

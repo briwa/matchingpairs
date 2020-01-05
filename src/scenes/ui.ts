@@ -15,7 +15,7 @@ export default class UIScene extends Phaser.Scene {
       return 0
     }
 
-    return this.parent.level.openedEmojis.length - 1
+    return this.parent.level.openedTileIndices.length - 1
   }
 
   init ({ parent }) {

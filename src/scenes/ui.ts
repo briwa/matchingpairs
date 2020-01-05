@@ -11,7 +11,11 @@ export default class UIScene extends Phaser.Scene {
   private overlay: Phaser.GameObjects.Container
 
   get score () {
-    return this.parent.openedEmojis.length - 1
+    if (!this.parent) {
+      return 0
+    }
+
+    return this.parent.level.openedEmojis.length - 1
   }
 
   init ({ parent }) {

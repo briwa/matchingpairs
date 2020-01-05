@@ -10,7 +10,7 @@ interface Config {
 
 export default class Emoji extends Phaser.GameObjects.Sprite {
   private static readonly closedFrame = 45
-  public isOpened = false
+  private isOpened = false
   public actualFrame: number
 
   constructor ({ scene, tileX, tileY, tileSize, actualFrame }: Config) {

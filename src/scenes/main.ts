@@ -1,28 +1,23 @@
 import Phaser from 'phaser'
 import Emoji from '../sprites/emoji'
 import UIScene from './ui'
+import MainLevel from '../levels/main'
 
 export default class MainScene extends Phaser.Scene {
   constructor () {
     super({ key: 'MainScene' })
   }
 
-  public openedEmojis: Emoji[][] = [[]]
+  public level: MainLevel
   public size = 4
   private tileSize = 64
   private zoomFactor = 1
   private group: Phaser.GameObjects.Group
 
-  get score () {
-    const foo = Math.floor(this.openedEmojis.length / 2)
-    console.log(foo)
-    return foo
-  }
-
 
   resetLevel () {
     this.group.children.each((child) => child.destroy())
-    this.openedEmojis = [[]]
+    this.level.reset()
     this.setupLevel()
   }
 
@@ -34,36 +29,25 @@ export default class MainScene extends Phaser.Scene {
 
   create () {
     this.cameras.main.centerOn(this.tileSize / 2 * (this.size - 1), this.tileSize / 2 * (this.size - 1)).setZoom(this.zoomFactor)
+    this.level = new MainLevel(this.size)
     this.scene.add('UIScene', UIScene, true, { parent: this })
 
     this.setupLevel()
   }
 
   private onPointerDown (emoji: Emoji) {
-    const lastOpenedEmojis = this.openedEmojis[this.openedEmojis.length - 1]
+    const { lastOpenedEmoji, paired } = this.level.toggleEmoji(emoji)
 
-    if (!lastOpenedEmojis.length) {
-      lastOpenedEmojis.push(emoji)
-    } else {
-      const lastOpenedEmoji = lastOpenedEmojis[0]
-      if (emoji.isOpened) {
-        lastOpenedEmojis.pop()
-      } else if (lastOpenedEmoji.actualFrame === emoji.actualFrame) {
-        lastOpenedEmoji.off('pointerdown')
-        emoji.off('pointerdown')
-
-        lastOpenedEmojis.push(emoji)
-        this.openedEmojis.push([])
-      } else {
-        this.input.enabled = false
-        this.time.delayedCall(500, () => {
-          lastOpenedEmoji.toggle()
-          emoji.toggle()
-          lastOpenedEmojis.pop()
-
-          this.input.enabled = true
-        })
-      }
+    if (paired) {
+      emoji.off('pointerdown')
+      lastOpenedEmoji.off('pointerdown')
+    } else if (lastOpenedEmoji && lastOpenedEmoji !== emoji) {
+      this.input.enabled = false
+      this.time.delayedCall(500, () => {
+        lastOpenedEmoji.toggle()
+        emoji.toggle()
+        this.input.enabled = true
+      })
     }
 
     emoji.toggle()
@@ -71,16 +55,7 @@ export default class MainScene extends Phaser.Scene {
 
   private setupLevel () {
     this.group = this.group || this.add.group()
-
-    const shuffledEmojis = Phaser.Math.RND.shuffle(Array.from({length: 45}, (v, i) => i))
-      .slice(0, Math.pow(this.size, 2) / 2)
-
-    const tiles = shuffledEmojis.reduce((tiles, number, idx) => {
-      tiles.push(shuffledEmojis[idx], shuffledEmojis[idx])
-      return tiles
-    }, [])
-
-    const shuffledTiles = Phaser.Math.RND.shuffle(tiles)
+    const shuffledTiles = this.level.create()
 
     for (let column = 0; column < this.size; column++) {
       for (let row = 0; row < this.size; row++) {

@@ -8,16 +8,15 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public level: MainLevel
-  public size = 4
+  public size = 8
   private tileSize = 64
-  private zoomFactor = 1
+  private zoomFactor = 0.75
   private closedFrame = 45
   private group: Phaser.GameObjects.Group
 
 
   resetLevel () {
     this.group.children.each((child) => child.destroy())
-    this.level.reset()
     this.setupLevel()
   }
 

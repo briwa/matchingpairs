@@ -1,5 +1,5 @@
 export default class MainLevel {
-  public openedTileIndices: number[][] = [[]]
+  public openedTileIndices: number[][]
   private size: number
   private tiles: number[]
 
@@ -8,19 +8,19 @@ export default class MainLevel {
   }
 
   create () {
+    this.openedTileIndices = [[]]
     this.tiles = []
 
     const allTilesCount = 45
     const allTiles = Array.from({length: allTilesCount}, (v, i) => i)
-    const maxUniqueTilesCount = this.size * 2
+    const maxUniqueTilesCount = Math.pow(this.size, 2) / 2
 
-    // TODO: Still not that random...
     while (allTiles.length > allTilesCount - maxUniqueTilesCount) {
       let pairCount = 2
-      const randomTileIdx = Math.floor(Math.random() * allTiles.length)
+      const randomTileIdx = Math.floor(Math.random() * allTiles.length - 1)
       const randomTile = allTiles[randomTileIdx]
       while (pairCount) {
-        const randomShuffledIdx = Math.floor(Math.random() * this.tiles.length)
+        const randomShuffledIdx = Math.floor(Math.random() * this.tiles.length - 1)
         this.tiles.splice(randomShuffledIdx, 0, randomTile)
         pairCount--
       }
@@ -28,10 +28,6 @@ export default class MainLevel {
     }
 
     return this.tiles
-  }
-
-  reset () {
-    this.openedTileIndices = [[]]
   }
 
   toggleTile (tileIdx: number) {

@@ -9,8 +9,8 @@ export default class MainScene extends Phaser.Scene {
 
   public openedEmojis: Emoji[][] = [[]]
   public size = 4
-  private tileSize = 32
-  private zoomFactor = 2
+  private tileSize = 64
+  private zoomFactor = 1
   private group: Phaser.GameObjects.Group
 
   get score () {
@@ -27,9 +27,9 @@ export default class MainScene extends Phaser.Scene {
   }
 
   preload () {
-    // 42 columns * 44 rows
-    // https://github.com/Deveo/emojione-png-sprites
-    this.load.spritesheet('emoji', 'assets/sprite-32.png', { frameWidth: this.tileSize, frameHeight: this.tileSize })
+    // 46 icons (10*5)
+    // https://github.com/twitter/twemoji
+    this.load.spritesheet('emoji', 'assets/emoji-64.png', { frameWidth: this.tileSize, frameHeight: this.tileSize })
   }
 
   create () {
@@ -72,7 +72,7 @@ export default class MainScene extends Phaser.Scene {
   private setupLevel () {
     this.group = this.group || this.add.group()
 
-    const shuffledEmojis = Phaser.Math.RND.shuffle(Array.from({length: 42 * 44}, (v, i) => i))
+    const shuffledEmojis = Phaser.Math.RND.shuffle(Array.from({length: 45}, (v, i) => i))
       .slice(0, Math.pow(this.size, 2) / 2)
 
     const tiles = shuffledEmojis.reduce((tiles, number, idx) => {

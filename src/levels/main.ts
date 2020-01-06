@@ -9,12 +9,12 @@ export default class MainLevel {
   private allTilesCount
   private tiles: number[]
 
-  constructor ({ size, allTilesCount }) {
-    this.size = size
+  constructor ({ allTilesCount }) {
     this.allTilesCount = allTilesCount
   }
 
-  create () {
+  create ({ size }) {
+    this.size = size
     this.openedTiles = [[]]
     this.tiles = []
 

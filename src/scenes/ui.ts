@@ -7,6 +7,7 @@ export default class UIScene extends Phaser.Scene {
     super({ key: 'UIScene' })
   }
 
+  private readonly msPerPair = 4000
   private score = 0
   private maxScore = 0
   private winOverlay: Overlay
@@ -14,7 +15,7 @@ export default class UIScene extends Phaser.Scene {
   private timer: Phaser.Time.TimerEvent
   private progressBar: Phaser.GameObjects.Graphics
 
-  get timerProgress () {
+  private get timerProgress () {
     if (!this.timer) {
       return 0
     }
@@ -29,12 +30,13 @@ export default class UIScene extends Phaser.Scene {
     this.events.on('start', ({ maxScore }) => {
       this.score = 0
       this.maxScore = maxScore
-      this.resetTimer()
-    })
-  }
 
-  resetTimer () {
-    this.timer = this.time.addEvent({ delay: this.maxScore * 4000 })
+      if (this.timer) {
+        this.timer.remove()
+      }
+
+      this.timer = this.time.addEvent({ delay: this.maxScore * this.msPerPair })
+    })
   }
 
   create () {

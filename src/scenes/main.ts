@@ -13,11 +13,13 @@ export default class MainScene extends Phaser.Scene {
   private zoomFactor = 1
   private closedFrame = 45
   private group: Phaser.GameObjects.Group
+  private ui: Phaser.Scene
 
 
   resetLevel () {
     this.group.children.each((child) => child.destroy())
     this.setupLevel()
+    this.ui.events.emit('start', { maxScore: Math.pow(this.size, 2) })
   }
 
   preload () {
@@ -29,7 +31,9 @@ export default class MainScene extends Phaser.Scene {
   create () {
     this.cameras.main.centerOn(this.tileSize / 2 * (this.size - 1), this.tileSize / 2 * (this.size - 1)).setZoom(this.zoomFactor)
     this.level = new MainLevel(this.size)
-    this.scene.add('UIScene', UIScene, true, { parent: this })
+    this.ui = this.scene.add('UIScene', UIScene, true)
+    this.ui.events.on('reset', this.resetLevel.bind(this))
+
     this.setupLevel()
   }
 
@@ -51,6 +55,8 @@ export default class MainScene extends Phaser.Scene {
       if (isPaired) {
         sprite.off('pointerdown')
         lastOpenedSprite.off('pointerdown')
+
+        this.ui.events.emit('score', { score: this.level.openedTiles.length - 1 })
       } else if (shouldOpen) {
         this.input.enabled = false
         this.time.delayedCall(500, () => {

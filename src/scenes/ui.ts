@@ -7,55 +7,52 @@ export default class UIScene extends Phaser.Scene {
     super({ key: 'UIScene' })
   }
 
-  private parent: MainScene
+  private score = 0
+  private maxScore = 0
   private winOverlay: Overlay
   private loseOverlay: Overlay
   private timer: Phaser.Time.TimerEvent
   private progressBar: Phaser.GameObjects.Graphics
 
-  get score () {
-    if (!this.parent) {
+  get timerProgress () {
+    if (!this.timer) {
       return 0
     }
 
-    return this.parent.level.openedTiles.length - 1
+    return this.timer.getProgress()
   }
 
-  init ({ parent }) {
-    this.parent = parent
+  init () {
+    this.events.on('score', ({ score }) => {
+      this.score = score
+    })
+    this.events.on('start', ({ maxScore }) => {
+      this.score = 0
+      this.maxScore = maxScore
+      this.resetTimer()
+    })
   }
 
   resetTimer () {
-    this.timer = this.time.delayedCall(Math.pow(this.parent.size, 2) / 2 * 4000, () => {
-      this.loseOverlay.setVisible(true)
-    })
+    this.timer = this.time.addEvent({ delay: this.maxScore * 4000 })
   }
 
   create () {
     this.winOverlay = new Overlay(this, 'You win!\n Tap anywhere to play again.')
     this.loseOverlay = new Overlay(this, 'You lose!\n Tap anywhere to play again.')
-      .setVisible(false)
-
     this.progressBar = this.add.graphics()
 
-    this.winOverlay.on('pointerdown', () => this.parent.resetLevel())
-    this.loseOverlay.on('pointerdown', () => {
-      this.parent.resetLevel()
-      this.resetTimer()
-      this.loseOverlay.setVisible(false)
-    })
-
-    this.resetTimer()
+    this.winOverlay.on('pointerdown', () => this.events.emit('reset'))
+    this.loseOverlay.on('pointerdown', () => this.events.emit('reset'))
   }
 
   update () {
-    this.winOverlay.setVisible((this.parent.size * 2) === this.score)
+    this.winOverlay.setVisible(this.maxScore === (this.score * 2))
+    this.loseOverlay.setVisible(this.timerProgress === 1)
 
-    if (this.timer) {
-      this.progressBar.clear()
-      this.progressBar
-        .fillStyle(0xffffff)
-        .fillRect(0, 0, (1 - this.timer.getProgress()) * 480, 16)
-    }
+    this.progressBar.clear()
+    this.progressBar
+      .fillStyle(0xffffff)
+      .fillRect(0, 0, (1 - this.timerProgress) * 480, 16)
   }
 }

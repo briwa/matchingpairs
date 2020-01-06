@@ -30,7 +30,7 @@ export default class MainScene extends Phaser.Scene {
 
   create () {
     this.cameras.main.centerOn(this.tileSize / 2 * (this.size - 1), this.tileSize / 2 * (this.size - 1)).setZoom(this.zoomFactor)
-    this.level = new MainLevel(this.size)
+    this.level = new MainLevel({ size: this.size, allTilesCount: 45 })
     this.ui = this.scene.add('UIScene', UIScene, true)
     this.ui.events.on('reset', this.resetLevel.bind(this))
 

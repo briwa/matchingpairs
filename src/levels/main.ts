@@ -6,21 +6,22 @@ interface Tile {
 export default class MainLevel {
   public openedTiles: { idx: number, tile: number }[][]
   private size: number
+  private allTilesCount
   private tiles: number[]
 
-  constructor (size) {
+  constructor ({ size, allTilesCount }) {
     this.size = size
+    this.allTilesCount = allTilesCount
   }
 
   create () {
     this.openedTiles = [[]]
     this.tiles = []
 
-    const allTilesCount = 45
-    const allTiles = Array.from({length: allTilesCount}, (v, i) => i)
+    const allTiles = Array.from({length: this.allTilesCount}, (v, i) => i)
     const maxUniqueTilesCount = Math.pow(this.size, 2) / 2
 
-    while (allTiles.length > allTilesCount - maxUniqueTilesCount) {
+    while (allTiles.length > this.allTilesCount - maxUniqueTilesCount) {
       let pairCount = 2
       const randomTileIdx = Math.floor(Math.random() * allTiles.length - 1)
       const randomTile = allTiles[randomTileIdx]

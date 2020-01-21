@@ -1,10 +1,9 @@
 import Phaser from 'phaser'
-import MainScene from './main'
-import Overlay from '../sprites/overlay'
+import Overlay from '../../sprites/overlay'
 
 export default class UIScene extends Phaser.Scene {
   constructor () {
-    super({ key: 'UIScene' })
+    super({ key: 'UIScene', active: false })
   }
 
   private readonly msPerPair = 4000
@@ -27,6 +26,7 @@ export default class UIScene extends Phaser.Scene {
     this.events.on('score', ({ score }) => {
       this.score = score
     })
+
     this.events.on('start', ({ maxScore }) => {
       this.score = 0
       this.maxScore = maxScore
@@ -40,8 +40,8 @@ export default class UIScene extends Phaser.Scene {
   }
 
   create () {
-    this.winOverlay = new Overlay(this, 'You win!\n Tap anywhere to play again.')
-    this.loseOverlay = new Overlay(this, 'You lose!\n Tap anywhere to play again.')
+    this.winOverlay = new Overlay(this, 'You *win*!\n Tap anywhere \nto play again.')
+    this.loseOverlay = new Overlay(this, 'You lose...\n Tap anywhere \nto play again.')
     this.progressBar = this.add.graphics()
 
     this.winOverlay.on('pointerdown', () => this.events.emit('reset'))

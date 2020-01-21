@@ -1,16 +1,16 @@
 import Phaser from 'phaser'
 import UIScene from './ui'
-import MainLevel from '../levels/main'
+import MainLevel from '../../levels/main'
 
-export default class MainScene extends Phaser.Scene {
+export default class GameScene extends Phaser.Scene {
   constructor () {
-    super({ key: 'MainScene' })
+    super({ key: 'GameScene' })
   }
 
   public level: MainLevel
   public size = 4
   private tileSize = 64
-  private zoomFactor = 1
+  private zoomFactor = 1.75
   private lastFrame = 59
   private group: Phaser.GameObjects.Group
   private ui: Phaser.Scene

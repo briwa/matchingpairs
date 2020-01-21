@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 
 export default class Overlay extends Phaser.GameObjects.Container {
   private overlayTextStyle = {
-    font: '28px',
+    font: '40px',
     fill: '#000000'
   }
 
@@ -16,10 +16,11 @@ export default class Overlay extends Phaser.GameObjects.Container {
     const title = this.scene.add
       .text(0, 0, text, this.overlayTextStyle)
       .setAlign('center')
+
     this.add([overlay, title])
 
-    Phaser.Display.Align.In.Center(title, overlay, 0, 0)
-
     overlay.on('pointerdown', () => this.emit('pointerdown'))
+
+    Phaser.Display.Align.In.Center(title, overlay, 0, 0)
   }
 }

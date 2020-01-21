@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
-import MainScene from './scenes/main'
+import HomeScene from './scenes/home'
+import GameScene from './scenes/game'
 
 class Game extends Phaser.Game {
   constructor () {
@@ -13,7 +14,8 @@ class Game extends Phaser.Game {
         height: 640
       },
       scene: [
-        MainScene
+        HomeScene,
+        GameScene
       ]
     })
   }

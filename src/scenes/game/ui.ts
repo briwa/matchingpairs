@@ -6,7 +6,7 @@ export default class UIScene extends Phaser.Scene {
     super({ key: 'UIScene', active: false })
   }
 
-  private readonly msPerPair = 4000
+  private readonly msPerPair = 2000
   private score = 0
   private maxScore = 0
   private winOverlay: Overlay
@@ -22,12 +22,20 @@ export default class UIScene extends Phaser.Scene {
     return this.timer.getProgress()
   }
 
+  private get isWinning () {
+    return this.maxScore === (this.score * 2)
+  }
+
   init () {
     this.events.on('score', ({ score }) => {
       this.score = score
+
+      if (this.isWinning) {
+        this.timer.remove()
+      }
     })
 
-    this.events.on('start', ({ maxScore }) => {
+    this.events.on('start-level', ({ maxScore }) => {
       this.score = 0
       this.maxScore = maxScore
 
@@ -35,7 +43,7 @@ export default class UIScene extends Phaser.Scene {
         this.timer.remove()
       }
 
-      this.timer = this.time.addEvent({ delay: this.maxScore * this.msPerPair })
+      this.timer = this.time.addEvent({ delay: maxScore * this.msPerPair })
     })
   }
 
@@ -44,13 +52,13 @@ export default class UIScene extends Phaser.Scene {
     this.loseOverlay = new Overlay(this, 'You lose...\n Tap anywhere \nto play again.')
     this.progressBar = this.add.graphics()
 
-    this.winOverlay.on('pointerdown', () => this.events.emit('reset'))
-    this.loseOverlay.on('pointerdown', () => this.events.emit('reset'))
+    this.winOverlay.on('pointerdown', () => this.events.emit('reset-level'))
+    this.loseOverlay.on('pointerdown', () => this.events.emit('reset-level'))
   }
 
   update () {
-    this.winOverlay.setVisible(this.maxScore === (this.score * 2))
-    this.loseOverlay.setVisible(this.timerProgress === 1)
+    this.winOverlay.setVisible(this.isWinning)
+    this.loseOverlay.setVisible(this.timerProgress === 1 && !this.isWinning)
 
     this.progressBar.clear()
     this.progressBar

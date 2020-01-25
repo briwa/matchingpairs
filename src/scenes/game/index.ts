@@ -24,7 +24,7 @@ export default class GameScene extends Phaser.Scene {
   create () {
     this.level = new MainLevel({ allTilesCount: this.lastFrame - 1 })
     this.ui = this.scene.add('UIScene', UIScene, true)
-    this.ui.events.on('reset', this.resetLevel.bind(this))
+    this.ui.events.on('reset-level', this.resetLevel.bind(this))
 
     this.resetLevel()
   }
@@ -81,6 +81,6 @@ export default class GameScene extends Phaser.Scene {
       .centerOn(this.tileSize / 2 * (this.size - 1), this.tileSize / 2 * (this.size - 1))
       .setZoom(this.zoomFactor)
 
-    this.ui.events.emit('start', { maxScore: Math.pow(this.size, 2) })
+    this.ui.events.emit('start-level', { maxScore: Math.pow(this.size, 2) })
   }
 }

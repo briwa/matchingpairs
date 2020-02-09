@@ -4,39 +4,18 @@ interface Tile {
 }
 
 export default class MainLevel {
-  public openedTiles: { idx: number, tile: number }[][]
-  private size: number
-  private allTilesCount
+  public openedTiles: { idx: number, tile: number }[][] = [[]]
   private tiles: number[]
 
-  constructor ({ allTilesCount }) {
-    this.allTilesCount = allTilesCount
-  }
-
-  create ({ size }) {
-    this.size = size
-    this.openedTiles = [[]]
-    this.tiles = []
-
-    const allTiles = Array.from({length: this.allTilesCount}, (v, i) => i)
-    const maxUniqueTilesCount = Math.pow(this.size, 2) / 2
-
-    while (allTiles.length > this.allTilesCount - maxUniqueTilesCount) {
-      let pairCount = 2
-      const randomTileIdx = Math.floor(Math.random() * allTiles.length - 1)
-      const randomTile = allTiles[randomTileIdx]
-      while (pairCount) {
-        const randomShuffledIdx = Math.floor(Math.random() * this.tiles.length - 1)
-        this.tiles.splice(randomShuffledIdx, 0, randomTile)
-        pairCount--
-      }
-      allTiles.splice(randomTileIdx, 1)
+  constructor (tiles: number[]) {
+    if (tiles.length % 2 !== 0) {
+      throw new Error('An array with an even length is required.')
     }
 
-    return this.tiles
+    this.tiles = tiles
   }
 
-  toggleTile (tileIdx: number): { current: Tile, shouldOpen: boolean, lastOpened?: Tile, isPaired?: boolean } {
+  toggle (tileIdx: number): { current: Tile, shouldOpen: boolean, lastOpened?: Tile, isPaired?: boolean } {
     const lastopenedTiles = this.openedTiles[this.openedTiles.length - 1]
     const lastOpened = lastopenedTiles[0]
     const current = {

@@ -22,7 +22,6 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create () {
-    this.level = new MainLevel({ allTilesCount: this.lastFrame - 1 })
     this.ui = this.scene.add('UIScene', UIScene, true)
     this.ui.events.on('reset-level', this.resetLevel.bind(this))
 
@@ -33,7 +32,7 @@ export default class GameScene extends Phaser.Scene {
     const tileX = Math.floor(sprite.x / this.tileSize)
     const tileY = Math.floor(sprite.y / this.tileSize)
     const tileIdx = (tileY * this.size) + tileX
-    const { current, lastOpened, shouldOpen, isPaired } = this.level.toggleTile(tileIdx)
+    const { current, lastOpened, shouldOpen, isPaired } = this.level.toggle(tileIdx)
 
     if (shouldOpen) {
       sprite.setFrame(current.tile)
@@ -67,7 +66,24 @@ export default class GameScene extends Phaser.Scene {
       this.group = this.add.group()
     }
 
-    this.level.create({ size: this.size })
+    const tilesCount = this.lastFrame - 1
+    const tiles = []
+    const allTiles = Array.from({length: tilesCount}, (v, i) => i)
+    const maxUniqueTilesCount = Math.pow(this.size, 2) / 2
+
+    while (allTiles.length > tilesCount - maxUniqueTilesCount) {
+      let pairCount = 2
+      const randomTileIdx = Math.floor(Math.random() * allTiles.length - 1)
+      const randomTile = allTiles[randomTileIdx]
+      while (pairCount) {
+        const randomShuffledIdx = Math.floor(Math.random() * tiles.length - 1)
+        tiles.splice(randomShuffledIdx, 0, randomTile)
+        pairCount--
+      }
+      allTiles.splice(randomTileIdx, 1)
+    }
+
+    this.level = new MainLevel(tiles)
 
     for (let row = 0; row < this.size; row++) {
       for (let column = 0; column < this.size; column++) {

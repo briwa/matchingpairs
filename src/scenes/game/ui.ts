@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
-import Overlay from '../../sprites/overlay'
+import Overlay from '../../objects/overlay'
+import { CANVAS_WIDTH } from '../../helpers/constants'
 
 export default class UIScene extends Phaser.Scene {
   constructor () {
@@ -63,6 +64,6 @@ export default class UIScene extends Phaser.Scene {
     this.progressBar.clear()
     this.progressBar
       .fillStyle(0xffffff)
-      .fillRect(0, 0, (1 - this.timerProgress) * 480, 16)
+      .fillRect(0, 0, (1 - this.timerProgress) * CANVAS_WIDTH, 16)
   }
 }

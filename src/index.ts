@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 
 import HomeScene from './scenes/home'
 import GameScene from './scenes/game'
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from './helpers/constants'
 
 class Game extends Phaser.Game {
   constructor () {
@@ -10,8 +11,8 @@ class Game extends Phaser.Game {
         mode: Phaser.Scale.FIT,
         parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 480,
-        height: 640
+        width: CANVAS_WIDTH,
+        height: CANVAS_HEIGHT
       },
       scene: [
         HomeScene,

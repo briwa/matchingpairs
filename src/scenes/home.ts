@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Button from '../objects/button'
+import WebFont from 'webfontloader'
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../helpers/constants'
 
 export default class HomeScene extends Phaser.Scene {
@@ -7,12 +8,8 @@ export default class HomeScene extends Phaser.Scene {
     super({ key: 'HomeScene' })
   }
 
-  preload () {
-    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
-  }
-
   create () {
-    ;(window as any).WebFont.load({
+    WebFont.load({
       custom: {
         families: [ 'Fredoka One', 'Didact Gothic' ]
       },
@@ -22,23 +19,29 @@ export default class HomeScene extends Phaser.Scene {
         const logoHeight = 240
 
         const cont = this.add.container(0, 0)
-        const heroCont = this.add.rectangle(0, 0, heroWidth, heroHeight, 0xff0000)
+        const heroCont = this.add.zone(0, 0, heroWidth, heroHeight)
           .setOrigin(0, 0)
-        const logoCont = this.add.rectangle(0, 0, heroWidth, logoHeight, 0xffff00)
+        const logoCont = this.add.zone(0, 0, heroWidth, logoHeight)
           .setOrigin(0, 0)
         const title = this.add.text(0, 0, 'Matching\nPairs', {
           fontFamily: 'Fredoka One',
           fontSize: '60px',
           align: 'center',
-          fill: '#000000'
+          fill: '#ffffff'
         })
-        const button = new Button({
+        const playButton = new Button({
           scene: this,
           label: 'play',
           variant: 'primary',
           size: 'lg'
         })
-        cont.add([heroCont, logoCont, title, button])
+        const settingsButton = new Button({
+          scene: this,
+          label: 'settings',
+          variant: 'primary',
+          size: 'md'
+        })
+        cont.add([heroCont, logoCont, title, playButton, settingsButton])
 
         const zone = this.add.zone(
           CANVAS_WIDTH / 2 - (heroWidth / 2),
@@ -48,10 +51,11 @@ export default class HomeScene extends Phaser.Scene {
         )
 
         Phaser.Display.Align.In.Center(cont, zone)
-        Phaser.Display.Align.In.Center(button, logoCont, -button.width / 2, (logoHeight / 2) + 20)
+        Phaser.Display.Align.In.Center(playButton, logoCont, -playButton.width / 2, (logoHeight / 2) + 20)
+        Phaser.Display.Align.In.Center(settingsButton, logoCont, -settingsButton.width / 2, (logoHeight / 2) + 100)
         Phaser.Display.Align.In.Center(title, logoCont)
 
-        button.on('pointerdown', () => {
+        playButton.on('pointerdown', () => {
           this.scene.setActive(false, 'HomeScene')
           this.scene.setActive(true, 'GameScene')
           this.scene.switch('GameScene')

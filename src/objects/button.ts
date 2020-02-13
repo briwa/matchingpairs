@@ -27,8 +27,8 @@ export default class Button extends Phaser.GameObjects.Container {
         fontSize: '25px'
       },
       button: {
-        paddingH: 40,
-        paddingV: 20
+        paddingH: 30,
+        paddingV: 16
       }
     },
     lg: {

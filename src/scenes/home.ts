@@ -11,7 +11,7 @@ export default class HomeScene extends Phaser.Scene {
   create () {
     WebFont.load({
       custom: {
-        families: [ 'Fredoka One', 'Didact Gothic' ]
+        families: [ 'Passion One', 'Fjalla One' ]
       },
       active: () => {
         const heroWidth = CANVAS_WIDTH / 1.5
@@ -23,9 +23,9 @@ export default class HomeScene extends Phaser.Scene {
           .setOrigin(0, 0)
         const logoCont = this.add.zone(0, 0, heroWidth, logoHeight)
           .setOrigin(0, 0)
-        const title = this.add.text(0, 0, 'Matching\nPairs', {
-          fontFamily: 'Fredoka One',
-          fontSize: '60px',
+        const title = this.add.text(0, 0, 'Matching\nPairs!', {
+          fontFamily: 'Passion One',
+          fontSize: '100px',
           align: 'center',
           fill: '#ffffff'
         })

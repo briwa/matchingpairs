@@ -9,9 +9,11 @@ export default class HomeScene extends Phaser.Scene {
   }
 
   create () {
+    this.cameras.main.setBackgroundColor(0xffffff)
+
     WebFont.load({
       custom: {
-        families: [ 'Passion One', 'Fjalla One' ]
+        families: ['Passion One', 'Fjalla One']
       },
       active: () => {
         const heroWidth = CANVAS_WIDTH / 1.5
@@ -27,7 +29,7 @@ export default class HomeScene extends Phaser.Scene {
           fontFamily: 'Passion One',
           fontSize: '100px',
           align: 'center',
-          fill: '#ffffff'
+          fill: '#000000'
         })
         const playButton = new Button({
           scene: this,

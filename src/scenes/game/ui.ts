@@ -63,7 +63,7 @@ export default class UIScene extends Phaser.Scene {
 
     this.progressBar.clear()
     this.progressBar
-      .fillStyle(0xffffff)
+      .fillStyle(0xcccccc)
       .fillRect(0, 0, (1 - this.timerProgress) * CANVAS_WIDTH, 16)
   }
 }

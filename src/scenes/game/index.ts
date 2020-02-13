@@ -22,6 +22,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create () {
+    this.cameras.main.setBackgroundColor(0xffffff)
+
     this.ui = this.scene.add('UIScene', UIScene, true)
     this.ui.events.on('reset-level', this.resetLevel.bind(this))
 

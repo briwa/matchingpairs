@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 
 import HomeScene from './scenes/home'
 import GameScene from './scenes/game'
+import ModalScene from './scenes/modal'
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from './helpers/constants'
 
 class Game extends Phaser.Game {
@@ -16,7 +17,8 @@ class Game extends Phaser.Game {
       },
       scene: [
         HomeScene,
-        GameScene
+        GameScene,
+        ModalScene
       ],
       backgroundColor: '#ffffff'
     })

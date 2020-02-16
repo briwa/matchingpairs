@@ -2,11 +2,6 @@ import Phaser from 'phaser'
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../helpers/constants'
 
 export default class Overlay extends Phaser.GameObjects.Container {
-  private overlayTextStyle = {
-    font: '40px',
-    fill: '#000000'
-  }
-
   constructor (scene, text) {
     super(scene, 0, 0)
     this.scene.add.existing(this)
@@ -14,7 +9,11 @@ export default class Overlay extends Phaser.GameObjects.Container {
       .setOrigin(0, 0)
 
     const title = this.scene.add
-      .text(0, 0, text, this.overlayTextStyle)
+      .text(0, 0, text, {
+        fontFamily: 'Fjalla One',
+        fontSize: '40px',
+        fill: '#000000'
+      })
       .setAlign('center')
 
     this.add([overlay, title])

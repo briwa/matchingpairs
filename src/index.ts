@@ -17,7 +17,8 @@ class Game extends Phaser.Game {
       scene: [
         HomeScene,
         GameScene
-      ]
+      ],
+      backgroundColor: '#ffffff'
     })
   }
 }

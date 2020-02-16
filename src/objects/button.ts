@@ -11,7 +11,7 @@ export default class Button extends Phaser.GameObjects.Container {
   private static variants = {
     primary: {
       text: {
-        fontFamily: '"Fjalla One", Arial',
+        fontFamily: 'Fjalla One',
         align: 'center',
         fill: '#000000'
       },

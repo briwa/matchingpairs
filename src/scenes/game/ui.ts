@@ -1,23 +1,21 @@
 import Phaser from 'phaser'
-import Overlay from '../../objects/overlay'
 import { CANVAS_WIDTH } from '../../helpers/constants'
 
 export default class UIScene extends Phaser.Scene {
   constructor () {
-    super({ key: 'UIScene', active: false })
+    super({ key: 'UIScene', active: true })
   }
 
   private readonly msPerPair = 2000
   private score = 0
   private maxScore = 0
-  private winOverlay: Overlay
-  private loseOverlay: Overlay
   private timer: Phaser.Time.TimerEvent
   private progressBar: Phaser.GameObjects.Graphics
+  private modal: Phaser.Scene
 
   private get timerProgress () {
     if (!this.timer) {
-      return 0
+      return 1
     }
 
     return this.timer.getProgress()
@@ -27,12 +25,25 @@ export default class UIScene extends Phaser.Scene {
     return this.maxScore === (this.score * 2)
   }
 
-  init () {
+  create () {
+    this.progressBar = this.add.graphics()
+    this.modal = this.scene.get('ModalScene')
+    this.modal.events.on('ok', () => {
+      this.events.emit('home')
+
+      if (this.timer) {
+        this.timer.remove()
+      }
+    })
+
     this.events.on('score', ({ score }) => {
       this.score = score
 
       if (this.isWinning) {
-        this.timer.remove()
+        this.timer.paused = true
+        this.modal.events.emit('show', {
+          text: 'You win!'
+        })
       }
     })
 
@@ -40,27 +51,15 @@ export default class UIScene extends Phaser.Scene {
       this.score = 0
       this.maxScore = maxScore
 
-      if (this.timer) {
-        this.timer.remove()
-      }
-
-      this.timer = this.time.addEvent({ delay: maxScore * this.msPerPair })
+      this.timer = this.time.delayedCall(maxScore * this.msPerPair, () => {
+        this.modal.events.emit('show', {
+          text: 'You lose...'
+        })
+      })
     })
   }
 
-  create () {
-    this.winOverlay = new Overlay(this, 'You *win*!\n Tap anywhere \nto play again.')
-    this.loseOverlay = new Overlay(this, 'You lose...\n Tap anywhere \nto play again.')
-    this.progressBar = this.add.graphics()
-
-    this.winOverlay.on('pointerdown', () => this.events.emit('reset-level'))
-    this.loseOverlay.on('pointerdown', () => this.events.emit('reset-level'))
-  }
-
   update () {
-    this.winOverlay.setVisible(this.isWinning)
-    this.loseOverlay.setVisible(this.timerProgress === 1 && !this.isWinning)
-
     this.progressBar.clear()
     this.progressBar
       .fillStyle(0xcccccc)

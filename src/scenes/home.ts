@@ -5,7 +5,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../helpers/constants'
 
 export default class HomeScene extends Phaser.Scene {
   constructor () {
-    super({ key: 'HomeScene' })
+    super({ key: 'HomeScene', active: true })
   }
 
   create () {
@@ -39,13 +39,8 @@ export default class HomeScene extends Phaser.Scene {
       variant: 'primary',
       size: 'lg'
     })
-    const settingsButton = new Button({
-      scene: this,
-      label: 'settings',
-      variant: 'primary',
-      size: 'md'
-    })
-    cont.add([heroCont, logoCont, title, playButton, settingsButton])
+
+    cont.add([heroCont, logoCont, title, playButton])
 
     const zone = this.add.zone(
       CANVAS_WIDTH / 2 - (heroWidth / 2),
@@ -56,12 +51,9 @@ export default class HomeScene extends Phaser.Scene {
 
     Phaser.Display.Align.In.Center(cont, zone)
     Phaser.Display.Align.In.Center(playButton, logoCont, -playButton.width / 2, (logoHeight / 2) + 20)
-    Phaser.Display.Align.In.Center(settingsButton, logoCont, -settingsButton.width / 2, (logoHeight / 2) + 100)
     Phaser.Display.Align.In.Center(title, logoCont)
 
     playButton.on('pointerdown', () => {
-      this.scene.setActive(false, 'HomeScene')
-      this.scene.setActive(true, 'GameScene')
       this.scene.switch('GameScene')
     })
   }

@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import UIScene from './ui'
 import MainLevel from '../../levels/main'
 
 export default class GameScene extends Phaser.Scene {
@@ -24,8 +23,11 @@ export default class GameScene extends Phaser.Scene {
   create () {
     this.cameras.main.setBackgroundColor(0xffffff)
 
-    this.ui = this.scene.add('UIScene', UIScene, true)
+    this.ui = this.scene.get('UIScene')
     this.ui.events.on('reset-level', this.resetLevel.bind(this))
+    this.ui.events.on('home', () => {
+      this.scene.switch('HomeScene')
+    })
 
     this.resetLevel()
   }
@@ -62,7 +64,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   private resetLevel () {
-    if (this.group) {
+    if (this.group && this.group.children) {
       this.group.children.each((child) => child.destroy())
     } else {
       this.group = this.add.group()

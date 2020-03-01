@@ -11,7 +11,7 @@ export default class HomeScene extends Phaser.Scene {
   create () {
     WebFont.load({
       custom: {
-        families: ['Passion One', 'Fjalla One']
+        families: ['Squada One', 'Maven Pro']
       },
       active: this.onLoaded.bind(this)
     })
@@ -28,7 +28,7 @@ export default class HomeScene extends Phaser.Scene {
     const logoCont = this.add.zone(0, 0, heroWidth, logoHeight)
       .setOrigin(0, 0)
     const title = this.add.text(0, 0, 'Matching\nPairs!', {
-      fontFamily: 'Passion One',
+      fontFamily: 'Squada One',
       fontSize: '100px',
       align: 'center',
       fill: '#000000'

@@ -32,7 +32,7 @@ export default class ModalScene extends Phaser.Scene {
       .setOrigin(0, 0)
 
     this.description = this.add.text(0, 0, '', {
-      fontFamily: 'Fjalla One',
+      fontFamily: 'Maven Pro',
       fontSize: '40px',
       color: '#000000'
     })

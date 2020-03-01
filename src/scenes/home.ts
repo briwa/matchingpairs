@@ -54,6 +54,8 @@ export default class HomeScene extends Phaser.Scene {
     Phaser.Display.Align.In.Center(title, logoCont)
 
     playButton.on('pointerdown', () => {
+      this.scene.setActive(false, 'HomeScene')
+      this.scene.setActive(true, 'GameScene')
       this.scene.switch('GameScene')
     })
   }

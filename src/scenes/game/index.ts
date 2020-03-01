@@ -21,11 +21,11 @@ export default class GameScene extends Phaser.Scene {
   }
 
   create () {
-    this.cameras.main.setBackgroundColor(0xffffff)
-
     this.ui = this.scene.get('UIScene')
     this.ui.events.on('reset-level', this.resetLevel.bind(this))
     this.ui.events.on('home', () => {
+      this.scene.setActive(false, 'GameScene')
+      this.scene.setActive(true, 'HomeScene')
       this.scene.switch('HomeScene')
     })
 

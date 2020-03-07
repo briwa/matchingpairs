@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 import HomeScene from './scenes/home'
+import CreditsScene from './scenes/credits'
 import GameScene from './scenes/game'
 import UIScene from './scenes/game/ui'
 import ModalScene from './scenes/modal'
@@ -19,6 +20,7 @@ class Game extends Phaser.Game {
       },
       scene: [
         HomeScene,
+        CreditsScene,
         GameScene,
         UIScene,
         ModalScene

@@ -3,6 +3,8 @@ import Button from '../objects/button'
 import WebFont from 'webfontloader'
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../helpers/constants'
 
+const { version: AppVersion } = require('../../package.json')
+
 export default class HomeScene extends Phaser.Scene {
   constructor () {
     super({ key: 'HomeScene', active: true })
@@ -49,7 +51,7 @@ export default class HomeScene extends Phaser.Scene {
       size: 'lg'
     })
 
-    const footerText = this.add.text(0, 0, 'Made by Briwa. Tap to see credits.', {
+    const footerText = this.add.text(0, 0, `v${AppVersion} | Made by Briwa | Tap to see credits.`, {
       fontFamily: 'Maven Pro',
       fontSize: '10px',
       align: 'center',

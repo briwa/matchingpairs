@@ -17,8 +17,8 @@ export default class ModalGenericScene extends ModalBaseScene {
     this.modal.add([this.description])
   }
 
-  onShown ({ options, body }) {
-    this.description.text = options.text
-    Phaser.Display.Align.In.Center(this.description, body)
+  onShown ({ text }) {
+    this.description.text = text
+    Phaser.Display.Align.In.Center(this.description, this.body)
   }
 }

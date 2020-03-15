@@ -34,16 +34,8 @@ export default class ModalSettingsScene extends ModalBaseScene {
     })
 
     modal.add([sizeLabel, this.sizeOptions])
-    Phaser.Display.Align.In.TopLeft(
-      sizeLabel,
-      body,
-      -30,
-      -28
-    )
-    Phaser.Display.Align.In.TopCenter(
-      this.sizeOptions,
-      body
-    )
+    Phaser.Display.Align.In.TopLeft(sizeLabel, body, -30, -28)
+    Phaser.Display.Align.In.TopCenter(this.sizeOptions, body)
   }
 
   onShown ({ options }) {

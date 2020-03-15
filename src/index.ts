@@ -1,11 +1,11 @@
 import Phaser from 'phaser'
 
 import HomeScene from './scenes/home'
-import CreditsScene from './scenes/credits'
 import GameScene from './scenes/game'
 import UIScene from './scenes/game/ui'
 import ModalGenericScene from './scenes/modals/generic'
 import ModalSettingsScene from './scenes/modals/settings'
+import ModalCreditsScene from './scenes/modals/credits'
 
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from './helpers/constants'
 
@@ -21,11 +21,11 @@ class Game extends Phaser.Game {
       },
       scene: [
         HomeScene,
-        CreditsScene,
         GameScene,
         UIScene,
         ModalGenericScene,
-        ModalSettingsScene
+        ModalSettingsScene,
+        ModalCreditsScene
       ],
       backgroundColor: '#ffffff'
     })

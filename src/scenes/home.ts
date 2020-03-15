@@ -82,7 +82,7 @@ export default class HomeScene extends Phaser.Scene {
     })
 
     footerText.on('pointerdown', () => {
-      this.scene.switch('CreditsScene')
+      this.scene.get('ModalCreditsScene').events.emit('show')
     })
 
     this.modalSettings.events.on('ok', (size: number) => {

@@ -31,9 +31,9 @@ export default class ModalBaseScene extends Phaser.Scene {
   private bg: Phaser.GameObjects.Rectangle
   private body: Phaser.GameObjects.Zone
   private okButton: Button
-  private modalWidth
-  private modalHeight
-  private bodyHeight
+  private modalWidth: number
+  private modalHeight: number
+  private bodyHeight: number
 
   create () {
     // BG
@@ -72,7 +72,6 @@ export default class ModalBaseScene extends Phaser.Scene {
     this.events.on('hide', this.hide.bind(this))
     this.okButton.on('pointerdown', () => {
       this.hide()
-      this.events.emit('ok')
     })
 
     this.onCreated({ modal: this.modal, body: this.body })
@@ -93,6 +92,7 @@ export default class ModalBaseScene extends Phaser.Scene {
     this.bg.setAlpha(0)
     this.modal.setVisible(false)
 
-    this.onHidden({ modal: this.modal, body: this.body })
+    const value = this.onHidden({ modal: this.modal, body: this.body })
+    this.events.emit('ok', value)
   }
 }

@@ -23,6 +23,7 @@ export default class Options extends Phaser.GameObjects.Container {
       const text = this.scene.add.text(xPos, 0, value.text, {
         fill: Options.COLOR_SECONDARY
       })
+
       if (typeof initialValue !== 'undefined' && value.value === initialValue) {
         text.setColor(Options.COLOR_PRIMARY)
         this.valueIdx = idx
@@ -32,13 +33,7 @@ export default class Options extends Phaser.GameObjects.Container {
       this.add([text])
 
       text.setInteractive()
-          .on('pointerdown', () => {
-            const currentSelectedText = this.getAt(this.valueIdx) as Phaser.GameObjects.Text
-            currentSelectedText.setColor(Options.COLOR_SECONDARY)
-
-            this.valueIdx = idx
-            text.setColor(Options.COLOR_PRIMARY)
-          })
+          .on('pointerdown', () => this.select(idx))
     })
   }
 
@@ -47,6 +42,21 @@ export default class Options extends Phaser.GameObjects.Container {
       return null
     }
 
-    return this.values[this.valueIdx]
+    return this.values[this.valueIdx].value
+  }
+
+  set value (val: string | number) {
+    this.select(this.values.findIndex((value) => value.value === val))
+  }
+
+  private select (idx: number) {
+    if (this.valueIdx !== null) {
+      const currentSelectedText = this.getAt(this.valueIdx) as Phaser.GameObjects.Text
+      currentSelectedText.setColor(Options.COLOR_SECONDARY)
+    }
+
+    const currentSelectedText = this.getAt(idx) as Phaser.GameObjects.Text
+    currentSelectedText.setColor(Options.COLOR_PRIMARY)
+    this.valueIdx = idx
   }
 }

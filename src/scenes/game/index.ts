@@ -1,47 +1,53 @@
 import Phaser from 'phaser'
 import MainLevel from '../../levels/main'
+import { CANVAS_WIDTH } from '../../helpers/constants'
 
 export default class GameScene extends Phaser.Scene {
   constructor () {
     super({ key: 'GameScene' })
   }
 
-  public level: MainLevel
-  public size = 4
-  private tileSize = 64
-  private zoomFactor = 1.75
-  private lastFrame = 59
+  private static readonly MARGIN = 20
+  private static readonly TILESIZE = 64
+  private static readonly LAST_FRAME = 59
+  private level: MainLevel
+  private size: number
   private group: Phaser.GameObjects.Group
   private ui: Phaser.Scene
 
   preload () {
     // 46 icons (10*5)
     // https://github.com/twitter/twemoji
-    this.load.spritesheet('emoji', 'assets/emoji-64.png', { frameWidth: this.tileSize, frameHeight: this.tileSize })
+    this.load.spritesheet('emoji', 'assets/emoji-64.png', { frameWidth: GameScene.TILESIZE, frameHeight: GameScene.TILESIZE })
+  }
+
+  init ({ size }) {
+    this.size = size
   }
 
   create () {
     this.ui = this.scene.get('UIScene')
     this.ui.events.on('reset-level', this.resetLevel.bind(this))
     this.ui.events.on('home', () => {
-      this.scene.setActive(false, 'GameScene')
-      this.scene.setActive(true, 'HomeScene')
-      this.scene.switch('HomeScene')
+      this.scene.transition({
+        duration: 0,
+        target: 'HomeScene'
+      })
     })
 
     this.resetLevel()
   }
 
   private onPointerDown (sprite) {
-    const tileX = Math.floor(sprite.x / this.tileSize)
-    const tileY = Math.floor(sprite.y / this.tileSize)
+    const tileX = Math.floor(sprite.x / GameScene.TILESIZE)
+    const tileY = Math.floor(sprite.y / GameScene.TILESIZE)
     const tileIdx = (tileY * this.size) + tileX
     const { current, lastOpened, shouldOpen, isPaired } = this.level.toggle(tileIdx)
 
     if (shouldOpen) {
       sprite.setFrame(current.tile)
     } else {
-      sprite.setFrame(this.lastFrame)
+      sprite.setFrame(GameScene.LAST_FRAME)
     }
 
     if (lastOpened) {
@@ -55,8 +61,8 @@ export default class GameScene extends Phaser.Scene {
       } else if (shouldOpen) {
         this.input.enabled = false
         this.time.delayedCall(500, () => {
-          lastOpenedSprite.setFrame(this.lastFrame)
-          sprite.setFrame(this.lastFrame)
+          lastOpenedSprite.setFrame(GameScene.LAST_FRAME)
+          sprite.setFrame(GameScene.LAST_FRAME)
           this.input.enabled = true
         })
       }
@@ -70,7 +76,7 @@ export default class GameScene extends Phaser.Scene {
       this.group = this.add.group()
     }
 
-    const tilesCount = this.lastFrame - 1
+    const tilesCount = GameScene.LAST_FRAME - 1
     const tiles = []
     const allTiles = Array.from({length: tilesCount}, (v, i) => i)
     const maxUniqueTilesCount = Math.pow(this.size, 2) / 2
@@ -91,15 +97,15 @@ export default class GameScene extends Phaser.Scene {
 
     for (let row = 0; row < this.size; row++) {
       for (let column = 0; column < this.size; column++) {
-        const emoji = this.add.sprite(this.tileSize * column, this.tileSize * row, 'emoji', this.lastFrame)
+        const emoji = this.add.sprite(GameScene.TILESIZE * column, GameScene.TILESIZE * row, 'emoji', GameScene.LAST_FRAME)
         emoji.setInteractive().on('pointerdown', () => this.onPointerDown.call(this, emoji))
         this.group.add(emoji)
       }
     }
 
     this.cameras.main
-      .centerOn(this.tileSize / 2 * (this.size - 1), this.tileSize / 2 * (this.size - 1))
-      .setZoom(this.zoomFactor)
+      .centerOn(GameScene.TILESIZE / 2 * (this.size - 1), GameScene.TILESIZE / 2 * (this.size - 1))
+      .setZoom((CANVAS_WIDTH - GameScene.MARGIN) / (GameScene.TILESIZE * this.size))
 
     this.ui.events.emit('start-level', { maxScore: Math.pow(this.size, 2) })
   }

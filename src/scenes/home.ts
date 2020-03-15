@@ -10,10 +10,7 @@ export default class HomeScene extends Phaser.Scene {
     super({ key: 'HomeScene', active: true })
   }
 
-  private settings = {
-    size: 4,
-    speed: 'medium'
-  }
+  private settings = { size: 4 }
   private modalSettings: Phaser.Scene
 
   create () {
@@ -73,9 +70,11 @@ export default class HomeScene extends Phaser.Scene {
     }).setInteractive()
 
     buttonPlay.on('pointerdown', () => {
-      this.scene.setActive(false, 'HomeScene')
-      this.scene.setActive(true, 'GameScene')
-      this.scene.switch('GameScene')
+      this.scene.transition({
+        target: 'GameScene',
+        duration: 0,
+        data: this.settings
+      })
     })
 
     buttonSettings.on('pointerdown', () => {

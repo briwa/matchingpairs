@@ -18,6 +18,17 @@ export default class Button extends Phaser.GameObjects.Container {
       button: {
         fill: 0xcccccc
       }
+    },
+    secondary: {
+      text: {
+        fontFamily: 'Maven Pro',
+        align: 'center',
+        fill: '#000000'
+      },
+      button: {
+        fill: 0xffffff,
+        stroke: 0x000000
+      }
     }
   }
 
@@ -77,6 +88,10 @@ export default class Button extends Phaser.GameObjects.Container {
     const graphics = new Phaser.GameObjects.Graphics(scene)
     graphics.fillStyle(style.button.fill, 1)
     graphics.fillRoundedRect(0, 0, buttonWidth, buttonHeight, 6)
+    if (typeof style.button.stroke !== 'undefined') {
+      graphics.lineStyle(1, style.button.stroke, 1)
+      graphics.strokeRoundedRect(0, 0, buttonWidth, buttonHeight, 6)
+    }
 
     this.add([graphics, text])
     this.setSize(buttonWidth, buttonHeight)

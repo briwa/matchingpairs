@@ -58,7 +58,7 @@ export default class HomeScene extends Phaser.Scene {
     const buttonSettings = new Button({
       scene: this,
       label: 'settings',
-      variant: 'primary',
+      variant: 'secondary',
       size: 'md'
     })
 

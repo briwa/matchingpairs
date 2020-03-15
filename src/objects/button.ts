@@ -8,7 +8,7 @@ interface Config {
 }
 
 export default class Button extends Phaser.GameObjects.Container {
-  private static variants = {
+  private static readonly VARIANTS = {
     primary: {
       text: {
         fontFamily: 'Maven Pro',
@@ -21,7 +21,7 @@ export default class Button extends Phaser.GameObjects.Container {
     }
   }
 
-  private static size = {
+  private static readonly SIZE = {
     md: {
       text: {
         fontSize: '25px'
@@ -43,12 +43,12 @@ export default class Button extends Phaser.GameObjects.Container {
   }
 
   private static getStyle (variant: Config['variant'] = 'primary', size: Config['size'] = 'md') {
-    const variantStyle = Button.variants[variant]
+    const variantStyle = Button.VARIANTS[variant]
     if (!variantStyle) {
       throw new Error (`Invalid variant: ${variant}`)
     }
 
-    const sizeStyle = Button.size[size]
+    const sizeStyle = Button.SIZE[size]
     if (!sizeStyle) {
       throw new Error (`Invalid size: ${size}`)
     }

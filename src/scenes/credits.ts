@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import WebFont from 'webfontloader'
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../helpers/constants'
 
 export default class CreditsScene extends Phaser.Scene {
@@ -7,16 +6,10 @@ export default class CreditsScene extends Phaser.Scene {
     super({ key: 'CreditsScene', active: false })
   }
 
-  create () {
-    WebFont.load({
-      custom: {
-        families: ['Maven Pro']
-      },
-      active: this.onLoaded.bind(this)
-    })
-  }
+  private static readonly TWEMOJI_LICENSE = 'Twemoji graphics made by Twitter and other contributors,'
+    + '\nlicensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/'
 
-  private onLoaded () {
+  create () {
     const bgZone = this.add.zone(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
       .setOrigin(0, 0)
 
@@ -36,7 +29,7 @@ export default class CreditsScene extends Phaser.Scene {
       fill: '#000000'
     })
 
-    const twemojiLicense = 'Twemoji graphics made by Twitter and other contributors,\nlicensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/'
+    const twemojiLicense = CreditsScene.TWEMOJI_LICENSE
     const twemojiText = this.add.text(0, 0, twemojiLicense, {
       fontFamily: 'Maven Pro',
       fontSize: '10px',

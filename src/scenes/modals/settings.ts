@@ -9,12 +9,11 @@ export default class ModalSettingsScene extends ModalBaseScene {
     })
   }
 
-  private static SIZES = [
-    { text: '3x3', value: 3 },
+  private static readonly SIZES = [
+    { text: '2x2', value: 2 },
     { text: '4x4', value: 4 },
-    { text: '5x5', value: 5 },
     { text: '6x6', value: 6 },
-    { text: '7x7', value: 7 }
+    { text: '8x8', value: 8 }
   ]
   private sizeOptions: Options
 

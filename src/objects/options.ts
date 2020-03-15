@@ -7,9 +7,9 @@ interface Config {
 }
 
 export default class Options extends Phaser.GameObjects.Container {
-  private static VALUE_MARGIN = 10
-  private static COLOR_PRIMARY = '#CCCCCC'
-  private static COLOR_SECONDARY = '#000000'
+  private static readonly VALUE_MARGIN = 10
+  private static readonly COLOR_PRIMARY = '#CCCCCC'
+  private static readonly COLOR_SECONDARY = '#000000'
   private values: Config['values']
   private valueIdx: number = null
 
@@ -25,8 +25,7 @@ export default class Options extends Phaser.GameObjects.Container {
       })
 
       if (typeof initialValue !== 'undefined' && value.value === initialValue) {
-        text.setColor(Options.COLOR_PRIMARY)
-        this.valueIdx = idx
+        this.select(idx)
       }
 
       xPos += text.width + Options.VALUE_MARGIN

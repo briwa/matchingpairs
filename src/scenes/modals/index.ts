@@ -26,7 +26,7 @@ export default class ModalBaseScene extends Phaser.Scene {
     this.bodyHeight = this.modalHeight - ModalBaseScene.FOOTER_HEIGHT
   }
 
-  private static FOOTER_HEIGHT = 80
+  private static readonly FOOTER_HEIGHT = 80
   private modal: Phaser.GameObjects.Container
   private bg: Phaser.GameObjects.Rectangle
   private body: Phaser.GameObjects.Zone
@@ -92,7 +92,7 @@ export default class ModalBaseScene extends Phaser.Scene {
     this.bg.setAlpha(0)
     this.modal.setVisible(false)
 
-    const value = this.onHidden({ modal: this.modal, body: this.body })
-    this.events.emit('ok', value)
+    const response = this.onHidden({ modal: this.modal, body: this.body })
+    this.events.emit('ok', response)
   }
 }

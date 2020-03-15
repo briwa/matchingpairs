@@ -5,7 +5,8 @@ export default class ModalSettingsScene extends ModalBaseScene {
   constructor () {
     super({
       key: 'ModalSettingsScene',
-      width: 400
+      width: 300,
+      height: 200
     })
   }
 
@@ -18,13 +19,31 @@ export default class ModalSettingsScene extends ModalBaseScene {
   private sizeOptions: Options
 
   onCreated ({ modal, body }) {
-    this.sizeOptions = new Options({
-      scene: this,
-      values: ModalSettingsScene.SIZES
+    const sizeLabel = this.add.text(0, 0, 'Tiles', {
+      fill: '#000000',
+      fontSize: 30
     })
 
-    modal.add([this.sizeOptions])
-    Phaser.Display.Align.In.Center(this.sizeOptions, body)
+    this.sizeOptions = new Options({
+      scene: this,
+      values: ModalSettingsScene.SIZES,
+      style: {
+        width: 80,
+        fontSize: 30
+      }
+    })
+
+    modal.add([sizeLabel, this.sizeOptions])
+    Phaser.Display.Align.In.TopLeft(
+      sizeLabel,
+      body,
+      -30,
+      -28
+    )
+    Phaser.Display.Align.In.TopCenter(
+      this.sizeOptions,
+      body
+    )
   }
 
   onShown ({ options }) {

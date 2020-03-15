@@ -2,38 +2,57 @@ import Phaser from 'phaser'
 
 interface Config {
   scene: Phaser.Scene
-  initialValue?: string | number
   values: { text: string, value: string | number }[]
+  initialValue?: string | number
+  style?: {
+    width?: number
+    fontSize?: number
+  }
 }
 
 export default class Options extends Phaser.GameObjects.Container {
-  private static readonly VALUE_MARGIN = 10
+  private static readonly FONT_SIZE = 20
+  private static readonly MARGIN = {
+    x: Options.FONT_SIZE / 2,
+    y: Options.FONT_SIZE + (Options.FONT_SIZE / 4)
+  }
   private static readonly COLOR_PRIMARY = '#CCCCCC'
   private static readonly COLOR_SECONDARY = '#000000'
   private values: Config['values']
   private valueIdx: number = null
 
-  constructor ({ scene, values, initialValue }: Config) {
+  constructor ({ scene, values, initialValue, style }: Config) {
     super(scene, 0, 0)
     this.scene.add.existing(this)
     this.values = values
+    const { width, fontSize } = style || {}
 
     let xPos = 0
+    let yPos = 0
     this.values.forEach((value, idx) => {
-      const text = this.scene.add.text(xPos, 0, value.text, {
-        fill: Options.COLOR_SECONDARY
+      const text = this.scene.add.text(xPos, yPos, value.text, {
+        fill: Options.COLOR_SECONDARY,
+        fontSize: fontSize || Options.FONT_SIZE
       })
 
       if (typeof initialValue !== 'undefined' && value.value === initialValue) {
         this.select(idx)
       }
 
-      xPos += text.width + Options.VALUE_MARGIN
-      this.add([text])
+      const nextXPos = xPos + text.width
+      if (typeof width === 'undefined' || nextXPos < width) {
+        xPos = nextXPos + Options.MARGIN.x
+      } else {
+        xPos = 0
+        yPos += Options.MARGIN.y
+      }
 
+      this.add([text])
       text.setInteractive()
           .on('pointerdown', () => this.select(idx))
     })
+
+    this.setSize(typeof width === 'undefined' ? xPos : Math.min(xPos, width), yPos)
   }
 
   get value () {

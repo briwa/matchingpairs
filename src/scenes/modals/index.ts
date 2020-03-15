@@ -26,6 +26,7 @@ export default class ModalBaseScene extends Phaser.Scene {
     this.bodyHeight = this.modalHeight - ModalBaseScene.FOOTER_HEIGHT
   }
 
+  public static readonly MARGIN = { x: 10, y: 10 }
   private static readonly FOOTER_HEIGHT = 80
   private modal: Phaser.GameObjects.Container
   private bg: Phaser.GameObjects.Rectangle
@@ -66,7 +67,12 @@ export default class ModalBaseScene extends Phaser.Scene {
     )
 
     Phaser.Display.Align.In.Center(this.modal, zone)
-    Phaser.Display.Align.In.Center(this.okButton, modalBg, -this.okButton.width / 2, this.modalHeight - this.bodyHeight + 10)
+    Phaser.Display.Align.In.BottomCenter(
+      this.okButton,
+      modalBg,
+      -this.okButton.width / 2,
+      -this.okButton.height / 2 - ModalBaseScene.MARGIN.y
+    )
 
     this.events.on('show', this.show.bind(this))
     this.events.on('hide', this.hide.bind(this))

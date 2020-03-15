@@ -7,11 +7,11 @@ interface Config {
 }
 
 export default class Options extends Phaser.GameObjects.Container {
-  private values: Config['values']
-  private valueIdx: number = null
   private static VALUE_MARGIN = 10
   private static COLOR_PRIMARY = '#CCCCCC'
   private static COLOR_SECONDARY = '#000000'
+  private values: Config['values']
+  private valueIdx: number = null
 
   constructor ({ scene, values, initialValue }: Config) {
     super(scene, 0, 0)

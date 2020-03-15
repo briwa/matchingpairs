@@ -27,7 +27,7 @@ export default class UIScene extends Phaser.Scene {
 
   create () {
     this.progressBar = this.add.graphics()
-    this.modal = this.scene.get('ModalScene')
+    this.modal = this.scene.get('ModalGenericScene')
     this.modal.events.on('ok', () => {
       this.events.emit('home')
 

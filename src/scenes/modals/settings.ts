@@ -18,7 +18,7 @@ export default class ModalSettingsScene extends ModalBaseScene {
   ]
   private sizeOptions: Options
 
-  onCreated ({ modal, body }) {
+  onCreated () {
     const sizeLabel = this.add.text(0, 0, 'Tiles', {
       fill: '#000000',
       fontSize: 30
@@ -33,13 +33,13 @@ export default class ModalSettingsScene extends ModalBaseScene {
       }
     })
 
-    modal.add([sizeLabel, this.sizeOptions])
-    Phaser.Display.Align.In.TopLeft(sizeLabel, body, -30, -28)
-    Phaser.Display.Align.In.TopCenter(this.sizeOptions, body)
+    this.modal.add([sizeLabel, this.sizeOptions])
+    Phaser.Display.Align.In.TopLeft(sizeLabel, this.body, -30, -28)
+    Phaser.Display.Align.In.TopCenter(this.sizeOptions, this.body)
   }
 
-  onShown ({ options }) {
-    this.sizeOptions.value = options.value
+  onShown ({ value }) {
+    this.sizeOptions.value = value
   }
 
   onHidden () {

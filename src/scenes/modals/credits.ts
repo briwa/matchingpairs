@@ -11,7 +11,7 @@ export default class ModalCreditsScene extends ModalBaseScene {
   private static readonly TWEMOJI_LICENSE = 'Twemoji graphics made by Twitter and other contributors,'
     + '\nlicensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/'
 
-  onCreated ({ modal, body }) {
+  onCreated () {
     const title = this.add.text(0, 0, 'Credits', {
       fontFamily: 'Maven Pro',
       fontSize: '40px',
@@ -24,9 +24,9 @@ export default class ModalCreditsScene extends ModalBaseScene {
       fill: '#000000'
     })
 
-    modal.add([title, twemoji])
+    this.modal.add([title, twemoji])
 
-    Phaser.Display.Align.In.TopCenter(title, body, 0, -ModalBaseScene.MARGIN.y)
-    Phaser.Display.Align.In.TopCenter(twemoji, body, 0, -60)
+    Phaser.Display.Align.In.TopCenter(title, this.body, 0, -ModalBaseScene.MARGIN.y)
+    Phaser.Display.Align.In.TopCenter(twemoji, this.body, 0, -60)
   }
 }

@@ -7,14 +7,14 @@ export default class ModalGenericScene extends ModalBaseScene {
 
   private description: Phaser.GameObjects.Text
 
-  onCreated ({ modal }) {
+  onCreated () {
     this.description = this.add.text(0, 0, '', {
       fontFamily: 'Maven Pro',
       fontSize: '40px',
       color: '#000000'
     })
 
-    modal.add([this.description])
+    this.modal.add([this.description])
   }
 
   onShown ({ options, body }) {

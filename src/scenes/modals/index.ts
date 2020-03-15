@@ -8,15 +8,6 @@ interface Config {
   height?: number
 }
 
-interface Params {
-  modal: Phaser.GameObjects.Container
-  body: Phaser.GameObjects.Zone
-}
-
-interface ShownParams extends Params {
-  options: Record<string, any>
-}
-
 export default class ModalBaseScene extends Phaser.Scene {
   constructor (config: Config) {
     super({ key: config.key, active: true })
@@ -28,9 +19,9 @@ export default class ModalBaseScene extends Phaser.Scene {
 
   public static readonly MARGIN = { x: 10, y: 10 }
   private static readonly FOOTER_HEIGHT = 80
-  private modal: Phaser.GameObjects.Container
+  protected modal: Phaser.GameObjects.Container
+  protected body: Phaser.GameObjects.Zone
   private bg: Phaser.GameObjects.Rectangle
-  private body: Phaser.GameObjects.Zone
   private okButton: Button
   private modalWidth: number
   private modalHeight: number
@@ -80,25 +71,25 @@ export default class ModalBaseScene extends Phaser.Scene {
       this.hide()
     })
 
-    this.onCreated({ modal: this.modal, body: this.body })
+    this.onCreated()
   }
 
-  protected onCreated (params: Params) {}
-  protected onShown (params: ShownParams) {}
-  protected onHidden (params: Params) {}
+  protected onCreated () {}
+  protected onShown (params: Record<string, any>) {}
+  protected onHidden () {}
 
   private show (options) {
     this.bg.setAlpha(0.6)
     this.modal.setVisible(true)
 
-    this.onShown({ modal: this.modal, body: this.body, options })
+    this.onShown(options)
   }
 
   private hide () {
     this.bg.setAlpha(0)
     this.modal.setVisible(false)
 
-    const response = this.onHidden({ modal: this.modal, body: this.body })
+    const response = this.onHidden()
     this.events.emit('ok', response)
   }
 }

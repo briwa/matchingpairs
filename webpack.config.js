@@ -8,6 +8,9 @@ module.exports = {
   entry: {
     app: './src/index.ts'
   },
+  devServer: {
+    liveReload: false
+  },
   module: {
     rules: [
       {

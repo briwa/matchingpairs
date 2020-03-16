@@ -10,6 +10,7 @@ export default class UIScene extends Phaser.Scene {
   private static readonly MARGIN = { y: 20 }
   private score = 0
   private maxScore = 0
+  private speed = 0
   private timer: Phaser.Time.TimerEvent
   private progressBar: Phaser.GameObjects.Graphics
   private modal: Phaser.Scene
@@ -54,9 +55,10 @@ export default class UIScene extends Phaser.Scene {
       }
     })
 
-    this.events.on('start-level', ({ maxScore }) => {
+    this.events.on('start-level', ({ maxScore, speed }) => {
       this.score = 0
       this.maxScore = maxScore
+      this.speed = speed
       this.resetTimer()
     })
   }
@@ -82,7 +84,7 @@ export default class UIScene extends Phaser.Scene {
       this.timer.remove()
     }
 
-    const totalTime = (this.maxScore - (this.score * 2)) * 1000
+    const totalTime = (this.maxScore - (this.score * 2)) * this.speed
     this.timer = this.time.delayedCall(totalTime, () => {
       this.modal.events.emit('show', {
         text: 'You lose...'

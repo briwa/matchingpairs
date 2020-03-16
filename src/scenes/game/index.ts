@@ -12,6 +12,7 @@ export default class GameScene extends Phaser.Scene {
   private static readonly LAST_FRAME = 59
   private level: MainLevel
   private size: number
+  private speed: number
   private group: Phaser.GameObjects.Group
   private ui: Phaser.Scene
 
@@ -21,8 +22,9 @@ export default class GameScene extends Phaser.Scene {
     this.load.spritesheet('emoji', 'assets/emoji-64.png', { frameWidth: GameScene.TILESIZE, frameHeight: GameScene.TILESIZE })
   }
 
-  init ({ size }) {
+  init ({ size, speed }) {
     this.size = size
+    this.speed = speed
   }
 
   create () {
@@ -107,6 +109,9 @@ export default class GameScene extends Phaser.Scene {
       .centerOn(GameScene.TILESIZE / 2 * (this.size - 1), GameScene.TILESIZE / 2 * (this.size - 1))
       .setZoom((CANVAS_WIDTH - GameScene.MARGIN) / (GameScene.TILESIZE * this.size))
 
-    this.ui.events.emit('start-level', { maxScore: Math.pow(this.size, 2) })
+    this.ui.events.emit('start-level', {
+      maxScore: Math.pow(this.size, 2),
+      speed: this.speed
+    })
   }
 }

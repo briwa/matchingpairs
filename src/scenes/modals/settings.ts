@@ -6,7 +6,7 @@ export default class ModalSettingsScene extends ModalBaseScene {
     super({
       key: 'ModalSettingsScene',
       width: 300,
-      height: 200
+      height: 300
     })
   }
 
@@ -16,7 +16,14 @@ export default class ModalSettingsScene extends ModalBaseScene {
     { text: '6x6', value: 6 },
     { text: '8x8', value: 8 }
   ]
+  private static readonly SPEED = [
+    { text: 'beginner', value: 1500 },
+    { text: 'medium', value: 1000 },
+    { text: 'advanced', value: 700 },
+    { text: 'pro', value: 400 }
+  ]
   private sizeOptions: Options
+  private speedOptions: Options
 
   onCreated () {
     const sizeLabel = this.add.text(0, 0, 'Tiles', {
@@ -33,16 +40,37 @@ export default class ModalSettingsScene extends ModalBaseScene {
       }
     })
 
-    this.modal.add([sizeLabel, this.sizeOptions])
-    Phaser.Display.Align.In.TopLeft(sizeLabel, this.body, -30, -28)
+    const speedLabel = this.add.text(0, 0, 'Timer\nspeed', {
+      fill: '#000000',
+      fontSize: 30
+    })
+
+    this.speedOptions = new Options({
+      scene: this,
+      values: ModalSettingsScene.SPEED,
+      style: {
+        width: 100,
+        fontSize: 30
+      }
+    })
+
+    // TODO: Figure out why the options are going one step lower when width is specified.
+    this.modal.add([sizeLabel, this.sizeOptions, speedLabel, this.speedOptions])
+    Phaser.Display.Align.In.TopLeft(sizeLabel, this.body, -30, -30)
+    Phaser.Display.Align.In.TopLeft(speedLabel, this.body, -30, -94)
     Phaser.Display.Align.In.TopCenter(this.sizeOptions, this.body)
+    Phaser.Display.Align.In.TopCenter(this.speedOptions, this.body, 0, -55)
   }
 
-  onShown ({ value }) {
-    this.sizeOptions.value = value
+  onShown ({ size, speed }) {
+    this.sizeOptions.value = size
+    this.speedOptions.value = speed
   }
 
   onHidden () {
-    return this.sizeOptions.value
+    return {
+      size: this.sizeOptions.value,
+      speed: this.speedOptions.value
+    }
   }
 }

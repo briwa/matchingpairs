@@ -10,7 +10,7 @@ export default class HomeScene extends Phaser.Scene {
     super({ key: 'HomeScene', active: true })
   }
 
-  private settings = { size: 4 }
+  private settings = { size: 4, speed: 1000 }
   private modalSettings: Phaser.Scene
 
   create () {
@@ -78,15 +78,16 @@ export default class HomeScene extends Phaser.Scene {
     })
 
     buttonSettings.on('pointerdown', () => {
-      this.scene.get('ModalSettingsScene').events.emit('show', { value: this.settings.size })
+      this.scene.get('ModalSettingsScene').events.emit('show', this.settings)
     })
 
     footerText.on('pointerdown', () => {
       this.scene.get('ModalCreditsScene').events.emit('show')
     })
 
-    this.modalSettings.events.on('ok', (size: number) => {
+    this.modalSettings.events.on('ok', ({ size, speed }) => {
       this.settings.size = size
+      this.settings.speed = speed
     })
 
     cont.add([heroCont, logoCont, title, buttonPlay, buttonSettings])

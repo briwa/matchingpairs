@@ -49,19 +49,15 @@ export default class UIScene extends Phaser.Scene {
         this.modal.events.emit('show', {
           text: 'You win!'
         })
+      } else {
+        this.resetTimer()
       }
     })
 
     this.events.on('start-level', ({ maxScore }) => {
       this.score = 0
       this.maxScore = maxScore
-
-      const totalTime = maxScore * (Math.sqrt(maxScore) / 2 * 1000)
-      this.timer = this.time.delayedCall(totalTime, () => {
-        this.modal.events.emit('show', {
-          text: 'You lose...'
-        })
-      })
+      this.resetTimer()
     })
   }
 
@@ -79,5 +75,18 @@ export default class UIScene extends Phaser.Scene {
     if (this.timer) {
       this.timer.remove()
     }
+  }
+
+  private resetTimer () {
+    if (this.timer) {
+      this.timer.remove()
+    }
+
+    const totalTime = (this.maxScore - (this.score * 2)) * 1000
+    this.timer = this.time.delayedCall(totalTime, () => {
+      this.modal.events.emit('show', {
+        text: 'You lose...'
+      })
+    })
   }
 }

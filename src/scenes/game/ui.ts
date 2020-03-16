@@ -6,7 +6,6 @@ export default class UIScene extends Phaser.Scene {
     super({ key: 'UIScene', active: true })
   }
 
-  private readonly msPerPair = 2000
   private score = 0
   private maxScore = 0
   private timer: Phaser.Time.TimerEvent
@@ -51,7 +50,8 @@ export default class UIScene extends Phaser.Scene {
       this.score = 0
       this.maxScore = maxScore
 
-      this.timer = this.time.delayedCall(maxScore * this.msPerPair, () => {
+      const totalTime = maxScore * (Math.sqrt(maxScore) / 2 * 1000)
+      this.timer = this.time.delayedCall(totalTime, () => {
         this.modal.events.emit('show', {
           text: 'You lose...'
         })

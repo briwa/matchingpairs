@@ -4,11 +4,11 @@ import Game from '../index'
 
 const { version: appVersion } = require('../../package.json')
 
-export default class HomeScene extends Phaser.Scene {
+export default class Home extends Phaser.Scene {
   private settings = { size: 4, speed: 1000 }
 
   constructor () {
-    super({ key: 'HomeScene', active: true })
+    super({ key: 'Home', active: true })
   }
 
   public create () {
@@ -58,21 +58,21 @@ export default class HomeScene extends Phaser.Scene {
 
     buttonPlay.on('pointerdown', () => {
       this.scene.transition({
-        target: 'StageScene',
+        target: 'Stage',
         duration: 0,
         data: this.settings
       })
     })
 
     buttonSettings.on('pointerdown', () => {
-      this.scene.get('ModalSettingsScene').events.emit('show', this.settings)
+      this.scene.get('ModalSettings').events.emit('show', this.settings)
     })
 
     footerText.on('pointerdown', () => {
-      this.scene.get('ModalCreditsScene').events.emit('show')
+      this.scene.get('ModalCredits').events.emit('show')
     })
 
-    this.scene.get('ModalSettingsScene').events.on('ok', ({ size, speed }) => {
+    this.scene.get('ModalSettings').events.on('ok', ({ size, speed }) => {
       this.settings.size = size
       this.settings.speed = speed
     })

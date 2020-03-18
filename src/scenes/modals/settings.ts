@@ -1,7 +1,7 @@
-import ModalBaseScene from './index'
+import ModalBase from './index'
 import Options from '../../objects/options'
 
-export default class ModalSettingsScene extends ModalBaseScene {
+export default class ModalSettings extends ModalBase {
   private static readonly SIZES = [
     { text: '2x2', value: 2 },
     { text: '4x4', value: 4 },
@@ -19,7 +19,7 @@ export default class ModalSettingsScene extends ModalBaseScene {
 
   constructor () {
     super({
-      key: 'ModalSettingsScene',
+      key: 'ModalSettings',
       width: 300,
       height: 300
     })
@@ -33,7 +33,7 @@ export default class ModalSettingsScene extends ModalBaseScene {
 
     this.sizeOptions = new Options({
       scene: this,
-      values: ModalSettingsScene.SIZES,
+      values: ModalSettings.SIZES,
       style: {
         width: 80,
         fontSize: 30
@@ -47,7 +47,7 @@ export default class ModalSettingsScene extends ModalBaseScene {
 
     this.speedOptions = new Options({
       scene: this,
-      values: ModalSettingsScene.SPEED,
+      values: ModalSettings.SPEED,
       style: {
         width: 100,
         fontSize: 30

@@ -1,10 +1,10 @@
-import ModalBaseScene from './index'
+import ModalBase from './index'
 
-export default class ModalGenericScene extends ModalBaseScene {
+export default class ModalGeneric extends ModalBase {
   private description: Phaser.GameObjects.Text
 
   constructor () {
-    super({ key: 'ModalGenericScene' })
+    super({ key: 'ModalGeneric' })
   }
 
   onCreated () {

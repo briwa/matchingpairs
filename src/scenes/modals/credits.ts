@@ -1,12 +1,12 @@
-import ModalBaseScene from './index'
+import ModalBase from './index'
 
-export default class ModalCreditsScene extends ModalBaseScene {
+export default class ModalCredits extends ModalBase {
   private static readonly TWEMOJI_LICENSE = 'Twemoji graphics made by Twitter and other contributors,'
     + '\nlicensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/'
 
   constructor () {
     super({
-      key: 'ModalCreditsScene',
+      key: 'ModalCredits',
       width: 380
     })
   }
@@ -17,7 +17,7 @@ export default class ModalCreditsScene extends ModalBaseScene {
       fontSize: '40px',
       color: '#000000'
     })
-    const twemoji = this.add.text(0, 40, ModalCreditsScene.TWEMOJI_LICENSE, {
+    const twemoji = this.add.text(0, 40, ModalCredits.TWEMOJI_LICENSE, {
       fontFamily: 'Maven Pro',
       fontSize: '10px',
       align: 'left',
@@ -26,7 +26,7 @@ export default class ModalCreditsScene extends ModalBaseScene {
 
     this.modal.add([title, twemoji])
 
-    Phaser.Display.Align.In.TopCenter(title, this.body, 0, -ModalBaseScene.MARGIN.y)
+    Phaser.Display.Align.In.TopCenter(title, this.body, 0, -ModalBase.MARGIN.y)
     Phaser.Display.Align.In.TopCenter(twemoji, this.body, 0, -60)
   }
 }

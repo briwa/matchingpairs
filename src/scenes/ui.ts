@@ -2,7 +2,7 @@ import Phaser from 'phaser'
 import Game from '../index'
 import Button from '../objects/button'
 
-export default class UIScene extends Phaser.Scene {
+export default class UI extends Phaser.Scene {
   private static readonly MARGIN = { y: 20 }
   private score = 0
   private maxScore = 0
@@ -13,7 +13,7 @@ export default class UIScene extends Phaser.Scene {
   private back: Button
 
   constructor () {
-    super({ key: 'UIScene', active: true })
+    super({ key: 'UI', active: true })
   }
 
   private get timerProgress () {
@@ -30,7 +30,7 @@ export default class UIScene extends Phaser.Scene {
 
   create () {
     this.progressBar = this.add.graphics()
-    this.modal = this.scene.get('ModalGenericScene')
+    this.modal = this.scene.get('ModalGeneric')
     this.modal.events.on('ok', this.goBackHome.bind(this))
 
     this.back = new Button({
@@ -39,7 +39,7 @@ export default class UIScene extends Phaser.Scene {
       variant: 'secondary'
     })
     this.back.setX(Game.CANVAS_WIDTH / 2 - (this.back.width / 2))
-    this.back.setY(Game.CANVAS_HEIGHT - this.back.height - UIScene.MARGIN.y)
+    this.back.setY(Game.CANVAS_HEIGHT - this.back.height - UI.MARGIN.y)
     this.back.on('pointerdown', this.goBackHome.bind(this))
 
     this.events.on('score', ({ score }) => {

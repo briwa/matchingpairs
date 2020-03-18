@@ -3,7 +3,7 @@ interface Tile {
   tile: number
 }
 
-export default class MainLevel {
+export default class LevelMain {
   public openedTiles: { idx: number, tile: number }[][] = [[]]
   private tiles: number[]
 

@@ -1,12 +1,12 @@
 import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
-import HomeScene from './scenes/home'
-import StageScene from './scenes/stage'
-import UIScene from './scenes/ui'
-import ModalGenericScene from './scenes/modals/generic'
-import ModalSettingsScene from './scenes/modals/settings'
-import ModalCreditsScene from './scenes/modals/credits'
+import Home from './scenes/home'
+import Stage from './scenes/stage'
+import UI from './scenes/ui'
+import ModalGeneric from './scenes/modals/generic'
+import ModalSettings from './scenes/modals/settings'
+import ModalCredits from './scenes/modals/credits'
 
 export default class Game extends Phaser.Game {
   public static readonly CANVAS_WIDTH = 480
@@ -22,12 +22,12 @@ export default class Game extends Phaser.Game {
         height: Game.CANVAS_HEIGHT
       },
       scene: [
-        HomeScene,
-        StageScene,
-        UIScene,
-        ModalGenericScene,
-        ModalSettingsScene,
-        ModalCreditsScene
+        Home,
+        Stage,
+        UI,
+        ModalGeneric,
+        ModalSettings,
+        ModalCredits
       ],
       backgroundColor: '#ffffff'
     })

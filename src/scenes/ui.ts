@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
-import Game from '../../index'
-import Button from '../../objects/button'
+import Game from '../index'
+import Button from '../objects/button'
 
 export default class UIScene extends Phaser.Scene {
   private static readonly MARGIN = { y: 20 }

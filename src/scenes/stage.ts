@@ -1,8 +1,8 @@
 import Phaser from 'phaser'
-import Game from '../../index'
-import MainLevel from '../../levels/main'
+import Game from '../index'
+import MainLevel from '../levels/main'
 
-export default class GameScene extends Phaser.Scene {
+export default class StageScene extends Phaser.Scene {
   private static readonly MARGIN = 20
   private static readonly TILESIZE = 64
   private static readonly LAST_FRAME = 59
@@ -13,13 +13,13 @@ export default class GameScene extends Phaser.Scene {
   private ui: Phaser.Scene
 
   constructor () {
-    super({ key: 'GameScene' })
+    super({ key: 'StageScene' })
   }
 
   preload () {
     // 46 icons (10*5)
     // https://github.com/twitter/twemoji
-    this.load.spritesheet('emoji', 'assets/emoji-64.png', { frameWidth: GameScene.TILESIZE, frameHeight: GameScene.TILESIZE })
+    this.load.spritesheet('emoji', 'assets/emoji-64.png', { frameWidth: StageScene.TILESIZE, frameHeight: StageScene.TILESIZE })
   }
 
   init ({ size, speed }) {
@@ -41,15 +41,15 @@ export default class GameScene extends Phaser.Scene {
   }
 
   private onPointerDown (sprite) {
-    const tileX = Math.floor(sprite.x / GameScene.TILESIZE)
-    const tileY = Math.floor(sprite.y / GameScene.TILESIZE)
+    const tileX = Math.floor(sprite.x / StageScene.TILESIZE)
+    const tileY = Math.floor(sprite.y / StageScene.TILESIZE)
     const tileIdx = (tileY * this.size) + tileX
     const { current, lastOpened, shouldOpen, isPaired } = this.level.toggle(tileIdx)
 
     if (shouldOpen) {
       sprite.setFrame(current.tile)
     } else {
-      sprite.setFrame(GameScene.LAST_FRAME)
+      sprite.setFrame(StageScene.LAST_FRAME)
     }
 
     if (lastOpened) {
@@ -63,8 +63,8 @@ export default class GameScene extends Phaser.Scene {
       } else if (shouldOpen) {
         this.input.enabled = false
         this.time.delayedCall(500, () => {
-          lastOpenedSprite.setFrame(GameScene.LAST_FRAME)
-          sprite.setFrame(GameScene.LAST_FRAME)
+          lastOpenedSprite.setFrame(StageScene.LAST_FRAME)
+          sprite.setFrame(StageScene.LAST_FRAME)
           this.input.enabled = true
         })
       }
@@ -78,7 +78,7 @@ export default class GameScene extends Phaser.Scene {
       this.group = this.add.group()
     }
 
-    const tilesCount = GameScene.LAST_FRAME - 1
+    const tilesCount = StageScene.LAST_FRAME - 1
     const tiles = []
     const allTiles = Array.from({length: tilesCount}, (v, i) => i)
     const maxUniqueTilesCount = Math.pow(this.size, 2) / 2
@@ -99,15 +99,15 @@ export default class GameScene extends Phaser.Scene {
 
     for (let row = 0; row < this.size; row++) {
       for (let column = 0; column < this.size; column++) {
-        const emoji = this.add.sprite(GameScene.TILESIZE * column, GameScene.TILESIZE * row, 'emoji', GameScene.LAST_FRAME)
+        const emoji = this.add.sprite(StageScene.TILESIZE * column, StageScene.TILESIZE * row, 'emoji', StageScene.LAST_FRAME)
         emoji.setInteractive().on('pointerdown', () => this.onPointerDown.call(this, emoji))
         this.group.add(emoji)
       }
     }
 
     this.cameras.main
-      .centerOn(GameScene.TILESIZE / 2 * (this.size - 1), GameScene.TILESIZE / 2 * (this.size - 1))
-      .setZoom((Game.CANVAS_WIDTH - GameScene.MARGIN) / (GameScene.TILESIZE * this.size))
+      .centerOn(StageScene.TILESIZE / 2 * (this.size - 1), StageScene.TILESIZE / 2 * (this.size - 1))
+      .setZoom((Game.CANVAS_WIDTH - StageScene.MARGIN) / (StageScene.TILESIZE * this.size))
 
     this.ui.events.emit('start-level', {
       maxScore: Math.pow(this.size, 2),

@@ -2,8 +2,8 @@ import Phaser from 'phaser'
 import WebFont from 'webfontloader'
 
 import HomeScene from './scenes/home'
-import GameScene from './scenes/game'
-import UIScene from './scenes/game/ui'
+import StageScene from './scenes/stage'
+import UIScene from './scenes/ui'
 import ModalGenericScene from './scenes/modals/generic'
 import ModalSettingsScene from './scenes/modals/settings'
 import ModalCreditsScene from './scenes/modals/credits'
@@ -23,7 +23,7 @@ export default class Game extends Phaser.Game {
       },
       scene: [
         HomeScene,
-        GameScene,
+        StageScene,
         UIScene,
         ModalGenericScene,
         ModalSettingsScene,

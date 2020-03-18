@@ -58,7 +58,7 @@ export default class HomeScene extends Phaser.Scene {
 
     buttonPlay.on('pointerdown', () => {
       this.scene.transition({
-        target: 'GameScene',
+        target: 'StageScene',
         duration: 0,
         data: this.settings
       })

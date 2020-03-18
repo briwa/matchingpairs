@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import WebFont from 'webfontloader'
 import Button from '../objects/button'
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../helpers/constants'
 
@@ -13,16 +12,7 @@ export default class HomeScene extends Phaser.Scene {
   private settings = { size: 4, speed: 1000 }
   private modalSettings: Phaser.Scene
 
-  create () {
-    WebFont.load({
-      custom: {
-        families: ['Squada One', 'Maven Pro']
-      },
-      active: this.onLoaded.bind(this)
-    })
-  }
-
-  private onLoaded () {
+  public create () {
     this.modalSettings = this.scene.get('ModalSettingsScene')
 
     const heroWidth = CANVAS_WIDTH / 1.5

@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import WebFont from 'webfontloader'
 
 import HomeScene from './scenes/home'
 import GameScene from './scenes/game'
@@ -32,4 +33,13 @@ class Game extends Phaser.Game {
   }
 }
 
-new Game()
+window.addEventListener('load', () => {
+  WebFont.load({
+    custom: {
+      families: ['Squada One', 'Maven Pro']
+    },
+    active () {
+      new Game()
+    }
+  })
+})

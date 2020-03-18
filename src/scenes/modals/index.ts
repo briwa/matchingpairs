@@ -9,14 +9,6 @@ interface Config {
 }
 
 export default class ModalBaseScene extends Phaser.Scene {
-  constructor (config: Config) {
-    super({ key: config.key, active: true })
-
-    this.modalWidth = config.width || CANVAS_WIDTH / 1.5
-    this.modalHeight = config.height || CANVAS_HEIGHT / 2
-    this.bodyHeight = this.modalHeight - ModalBaseScene.FOOTER_HEIGHT
-  }
-
   public static readonly MARGIN = { x: 10, y: 10 }
   private static readonly FOOTER_HEIGHT = 80
   protected modal: Phaser.GameObjects.Container
@@ -26,6 +18,14 @@ export default class ModalBaseScene extends Phaser.Scene {
   private modalWidth: number
   private modalHeight: number
   private bodyHeight: number
+
+  constructor (config: Config) {
+    super({ key: config.key, active: true })
+
+    this.modalWidth = config.width || CANVAS_WIDTH / 1.5
+    this.modalHeight = config.height || CANVAS_HEIGHT / 2
+    this.bodyHeight = this.modalHeight - ModalBaseScene.FOOTER_HEIGHT
+  }
 
   create () {
     // BG

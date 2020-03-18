@@ -3,10 +3,6 @@ import MainLevel from '../../levels/main'
 import { CANVAS_WIDTH } from '../../helpers/constants'
 
 export default class GameScene extends Phaser.Scene {
-  constructor () {
-    super({ key: 'GameScene' })
-  }
-
   private static readonly MARGIN = 20
   private static readonly TILESIZE = 64
   private static readonly LAST_FRAME = 59
@@ -15,6 +11,10 @@ export default class GameScene extends Phaser.Scene {
   private speed: number
   private group: Phaser.GameObjects.Group
   private ui: Phaser.Scene
+
+  constructor () {
+    super({ key: 'GameScene' })
+  }
 
   preload () {
     // 46 icons (10*5)

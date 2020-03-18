@@ -1,11 +1,11 @@
 import ModalBaseScene from './index'
 
 export default class ModalGenericScene extends ModalBaseScene {
+  private description: Phaser.GameObjects.Text
+
   constructor () {
     super({ key: 'ModalGenericScene' })
   }
-
-  private description: Phaser.GameObjects.Text
 
   onCreated () {
     this.description = this.add.text(0, 0, '', {

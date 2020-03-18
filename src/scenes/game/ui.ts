@@ -3,10 +3,6 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../helpers/constants'
 import Button from '../../objects/button'
 
 export default class UIScene extends Phaser.Scene {
-  constructor () {
-    super({ key: 'UIScene', active: true })
-  }
-
   private static readonly MARGIN = { y: 20 }
   private score = 0
   private maxScore = 0
@@ -15,6 +11,10 @@ export default class UIScene extends Phaser.Scene {
   private progressBar: Phaser.GameObjects.Graphics
   private modal: Phaser.Scene
   private back: Button
+
+  constructor () {
+    super({ key: 'UIScene', active: true })
+  }
 
   private get timerProgress () {
     if (!this.timer) {

@@ -1,15 +1,15 @@
 import ModalBaseScene from './index'
 
 export default class ModalCreditsScene extends ModalBaseScene {
+  private static readonly TWEMOJI_LICENSE = 'Twemoji graphics made by Twitter and other contributors,'
+    + '\nlicensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/'
+
   constructor () {
     super({
       key: 'ModalCreditsScene',
       width: 380
     })
   }
-
-  private static readonly TWEMOJI_LICENSE = 'Twemoji graphics made by Twitter and other contributors,'
-    + '\nlicensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/'
 
   onCreated () {
     const title = this.add.text(0, 0, 'Credits', {

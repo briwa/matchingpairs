@@ -5,12 +5,12 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../helpers/constants'
 const { version: AppVersion } = require('../../package.json')
 
 export default class HomeScene extends Phaser.Scene {
+  private settings = { size: 4, speed: 1000 }
+  private modalSettings: Phaser.Scene
+
   constructor () {
     super({ key: 'HomeScene', active: true })
   }
-
-  private settings = { size: 4, speed: 1000 }
-  private modalSettings: Phaser.Scene
 
   public create () {
     this.modalSettings = this.scene.get('ModalSettingsScene')

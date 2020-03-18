@@ -2,14 +2,6 @@ import ModalBaseScene from './index'
 import Options from '../../objects/options'
 
 export default class ModalSettingsScene extends ModalBaseScene {
-  constructor () {
-    super({
-      key: 'ModalSettingsScene',
-      width: 300,
-      height: 300
-    })
-  }
-
   private static readonly SIZES = [
     { text: '2x2', value: 2 },
     { text: '4x4', value: 4 },
@@ -24,6 +16,14 @@ export default class ModalSettingsScene extends ModalBaseScene {
   ]
   private sizeOptions: Options
   private speedOptions: Options
+
+  constructor () {
+    super({
+      key: 'ModalSettingsScene',
+      width: 300,
+      height: 300
+    })
+  }
 
   onCreated () {
     const sizeLabel = this.add.text(0, 0, 'Tiles', {

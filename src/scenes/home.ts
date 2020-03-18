@@ -1,31 +1,28 @@
 import Phaser from 'phaser'
 import Button from '../objects/button'
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../helpers/constants'
+import Game from '../index'
 
-const { version: AppVersion } = require('../../package.json')
+const { version: appVersion } = require('../../package.json')
 
 export default class HomeScene extends Phaser.Scene {
   private settings = { size: 4, speed: 1000 }
-  private modalSettings: Phaser.Scene
 
   constructor () {
     super({ key: 'HomeScene', active: true })
   }
 
   public create () {
-    this.modalSettings = this.scene.get('ModalSettingsScene')
-
-    const heroWidth = CANVAS_WIDTH / 1.5
-    const heroHeight = CANVAS_HEIGHT / 1.5
+    const heroWidth = Game.CANVAS_WIDTH / 1.5
+    const heroHeight = Game.CANVAS_HEIGHT / 1.5
     const logoHeight = 200
 
-    const bgZone = this.add.zone(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+    const bgZone = this.add.zone(0, 0, Game.CANVAS_WIDTH, Game.CANVAS_HEIGHT)
       .setOrigin(0, 0)
     const titleZone = this.add.zone(
-      CANVAS_WIDTH / 2 - (heroWidth / 2),
-      CANVAS_HEIGHT / 2 - (heroHeight / 2),
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT
+      Game.CANVAS_WIDTH / 2 - (heroWidth / 2),
+      Game.CANVAS_HEIGHT / 2 - (heroHeight / 2),
+      Game.CANVAS_WIDTH,
+      Game.CANVAS_HEIGHT
     )
 
     const cont = this.add.container(0, 0)
@@ -52,7 +49,7 @@ export default class HomeScene extends Phaser.Scene {
       size: 'md'
     })
 
-    const footerText = this.add.text(0, 0, `v${AppVersion} \u00b7 Made by Briwa \u00b7 Tap to see credits.`, {
+    const footerText = this.add.text(0, 0, `v${appVersion} \u00b7 Made by Briwa \u00b7 Tap to see credits.`, {
       fontFamily: 'Maven Pro',
       fontSize: '10px',
       align: 'center',
@@ -75,7 +72,7 @@ export default class HomeScene extends Phaser.Scene {
       this.scene.get('ModalCreditsScene').events.emit('show')
     })
 
-    this.modalSettings.events.on('ok', ({ size, speed }) => {
+    this.scene.get('ModalSettingsScene').events.on('ok', ({ size, speed }) => {
       this.settings.size = size
       this.settings.speed = speed
     })

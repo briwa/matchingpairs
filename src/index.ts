@@ -8,17 +8,18 @@ import ModalGenericScene from './scenes/modals/generic'
 import ModalSettingsScene from './scenes/modals/settings'
 import ModalCreditsScene from './scenes/modals/credits'
 
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from './helpers/constants'
+export default class Game extends Phaser.Game {
+  public static readonly CANVAS_WIDTH = 480
+  public static readonly CANVAS_HEIGHT = 640
 
-class Game extends Phaser.Game {
   constructor () {
     super({
       scale: {
         mode: Phaser.Scale.FIT,
         parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: CANVAS_WIDTH,
-        height: CANVAS_HEIGHT
+        width: Game.CANVAS_WIDTH,
+        height: Game.CANVAS_HEIGHT
       },
       scene: [
         HomeScene,

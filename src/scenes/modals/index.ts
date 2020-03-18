@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 import Button from '../../objects/button'
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../helpers/constants'
+import Game from '../../index'
 
 interface Config {
   key: string
@@ -22,14 +22,14 @@ export default class ModalBaseScene extends Phaser.Scene {
   constructor (config: Config) {
     super({ key: config.key, active: true })
 
-    this.modalWidth = config.width || CANVAS_WIDTH / 1.5
-    this.modalHeight = config.height || CANVAS_HEIGHT / 2
+    this.modalWidth = config.width || Game.CANVAS_WIDTH / 1.5
+    this.modalHeight = config.height || Game.CANVAS_HEIGHT / 2
     this.bodyHeight = this.modalHeight - ModalBaseScene.FOOTER_HEIGHT
   }
 
   create () {
     // BG
-    this.bg = this.add.rectangle(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0x000000)
+    this.bg = this.add.rectangle(0, 0, Game.CANVAS_WIDTH, Game.CANVAS_HEIGHT, 0x000000)
       .setOrigin(0, 0)
       .setAlpha(0)
       .setInteractive()
@@ -51,10 +51,10 @@ export default class ModalBaseScene extends Phaser.Scene {
     this.modal.add([modalBg, this.body, this.okButton])
 
     const zone = this.add.zone(
-      CANVAS_WIDTH / 2 - (this.modalWidth / 2),
-      CANVAS_HEIGHT / 2 - (this.modalHeight / 2),
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT
+      Game.CANVAS_WIDTH / 2 - (this.modalWidth / 2),
+      Game.CANVAS_HEIGHT / 2 - (this.modalHeight / 2),
+      Game.CANVAS_WIDTH,
+      Game.CANVAS_HEIGHT
     )
 
     Phaser.Display.Align.In.Center(this.modal, zone)

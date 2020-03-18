@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../helpers/constants'
+import Game from '../../index'
 import Button from '../../objects/button'
 
 export default class UIScene extends Phaser.Scene {
@@ -38,8 +38,8 @@ export default class UIScene extends Phaser.Scene {
       label: 'back',
       variant: 'secondary'
     })
-    this.back.setX(CANVAS_WIDTH / 2 - (this.back.width / 2))
-    this.back.setY(CANVAS_HEIGHT - this.back.height - UIScene.MARGIN.y)
+    this.back.setX(Game.CANVAS_WIDTH / 2 - (this.back.width / 2))
+    this.back.setY(Game.CANVAS_HEIGHT - this.back.height - UIScene.MARGIN.y)
     this.back.on('pointerdown', this.goBackHome.bind(this))
 
     this.events.on('score', ({ score }) => {
@@ -67,7 +67,7 @@ export default class UIScene extends Phaser.Scene {
     this.progressBar.clear()
     this.progressBar
       .fillStyle(0xcccccc)
-      .fillRect(0, 0, (1 - this.timerProgress) * CANVAS_WIDTH, 16)
+      .fillRect(0, 0, (1 - this.timerProgress) * Game.CANVAS_WIDTH, 16)
     this.back.setVisible(this.timerProgress !== 1)
   }
 

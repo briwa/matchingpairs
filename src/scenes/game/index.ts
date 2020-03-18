@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
+import Game from '../../index'
 import MainLevel from '../../levels/main'
-import { CANVAS_WIDTH } from '../../helpers/constants'
 
 export default class GameScene extends Phaser.Scene {
   private static readonly MARGIN = 20
@@ -107,7 +107,7 @@ export default class GameScene extends Phaser.Scene {
 
     this.cameras.main
       .centerOn(GameScene.TILESIZE / 2 * (this.size - 1), GameScene.TILESIZE / 2 * (this.size - 1))
-      .setZoom((CANVAS_WIDTH - GameScene.MARGIN) / (GameScene.TILESIZE * this.size))
+      .setZoom((Game.CANVAS_WIDTH - GameScene.MARGIN) / (GameScene.TILESIZE * this.size))
 
     this.ui.events.emit('start-level', {
       maxScore: Math.pow(this.size, 2),

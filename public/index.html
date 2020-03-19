@@ -10,12 +10,30 @@
       padding: 0;
     }
 
-    #app {
+    .center {
       display: flex;
       justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .center span {
+      font-size: 40px;
+    }
+
+    #app:empty + .loading {
+      display: flex;
+    }
+
+    #app:not(:empty) + .loading {
+      display: none;
     }
   </style>
   <body>
     <div id="app"></div>
+    <div class="loading center">
+      <span>Loading...</span>
+    </div>
   </body>
 </html>

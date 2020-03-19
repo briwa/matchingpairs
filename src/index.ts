@@ -14,9 +14,9 @@ export default class Game extends Phaser.Game {
 
   constructor () {
     super({
+      parent: 'app',
       scale: {
         mode: Phaser.Scale.FIT,
-        parent: 'phaser-example',
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: Game.CANVAS_WIDTH,
         height: Game.CANVAS_HEIGHT
@@ -29,7 +29,7 @@ export default class Game extends Phaser.Game {
         ModalSettings,
         ModalCredits
       ],
-      backgroundColor: '#ffffff'
+      transparent: true
     })
   }
 }

@@ -8,6 +8,8 @@ import ModalGeneric from './scenes/modals/generic'
 import ModalSettings from './scenes/modals/settings'
 import ModalCredits from './scenes/modals/credits'
 
+import GameState from './plugins/state'
+
 export default class Game extends Phaser.Game {
   public static readonly CANVAS_WIDTH = 480
   public static readonly CANVAS_HEIGHT = 640
@@ -20,6 +22,11 @@ export default class Game extends Phaser.Game {
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: Game.CANVAS_WIDTH,
         height: Game.CANVAS_HEIGHT
+      },
+      plugins: {
+        global: [
+          { key: 'statePlugin', plugin: GameState, mapping: 'state' }
+        ]
       },
       scene: [
         Home,

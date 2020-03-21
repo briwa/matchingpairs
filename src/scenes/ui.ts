@@ -3,7 +3,7 @@ import Game from '../index'
 import Button from '../objects/button'
 
 export default class UI extends Phaser.Scene {
-  private static readonly MARGIN = { y: 20 }
+  private static readonly MARGIN = { y: 5 }
   private score = 0
   private maxScore = 0
   private speed = 0

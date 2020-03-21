@@ -106,7 +106,7 @@ export default class Stage extends Phaser.Scene {
     }
 
     this.cameras.main
-      .centerOn(Stage.TILESIZE / 2 * (this.size - 1), Stage.TILESIZE / 2 * (this.size - 1) + Stage.MARGIN)
+      .centerOn(Stage.TILESIZE / 2 * (this.size - 1), Stage.TILESIZE / 2 * (this.size - 1))
       .setZoom((Game.CANVAS_WIDTH - Stage.MARGIN) / (Stage.TILESIZE * this.size))
 
     this.ui.events.emit('start-level', {

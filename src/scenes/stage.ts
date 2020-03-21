@@ -5,7 +5,7 @@ import LevelMain from '../levels/main'
 export default class Stage extends Phaser.Scene {
   private static readonly MARGIN = 20
   private static readonly TILESIZE = 64
-  private static readonly LAST_FRAME = 59
+  private static readonly LAST_FRAME = 91
   private level: LevelMain
   private size: number
   private speed: number
@@ -17,7 +17,7 @@ export default class Stage extends Phaser.Scene {
   }
 
   preload () {
-    // 46 icons (10*5)
+    // 91 icons (10*9 + 1)
     // https://github.com/twitter/twemoji
     this.load.spritesheet('emoji', 'assets/emoji-64.png', { frameWidth: Stage.TILESIZE, frameHeight: Stage.TILESIZE })
   }
@@ -106,7 +106,7 @@ export default class Stage extends Phaser.Scene {
     }
 
     this.cameras.main
-      .centerOn(Stage.TILESIZE / 2 * (this.size - 1), Stage.TILESIZE / 2 * (this.size - 1))
+      .centerOn(Stage.TILESIZE / 2 * (this.size - 1), Stage.TILESIZE / 2 * (this.size - 1) + Stage.MARGIN)
       .setZoom((Game.CANVAS_WIDTH - Stage.MARGIN) / (Stage.TILESIZE * this.size))
 
     this.ui.events.emit('start-level', {

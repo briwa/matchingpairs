@@ -6,7 +6,8 @@ export default class ModalSettings extends ModalBase {
     { text: '2x2', value: 2 },
     { text: '4x4', value: 4 },
     { text: '6x6', value: 6 },
-    { text: '8x8', value: 8 }
+    { text: '8x8', value: 8 },
+    { text: '10x10', value: 10 }
   ]
   private static readonly SPEED = [
     { text: 'beginner', value: 1500 },
@@ -21,7 +22,7 @@ export default class ModalSettings extends ModalBase {
     super({
       key: 'ModalSettings',
       width: 300,
-      height: 300
+      height: 330
     })
   }
 
@@ -57,9 +58,9 @@ export default class ModalSettings extends ModalBase {
     // TODO: Figure out why the options are going one step lower when width is specified.
     this.modal.add([sizeLabel, this.sizeOptions, speedLabel, this.speedOptions])
     Phaser.Display.Align.In.TopLeft(sizeLabel, this.body, -30, -30)
-    Phaser.Display.Align.In.TopLeft(speedLabel, this.body, -30, -94)
-    Phaser.Display.Align.In.TopCenter(this.sizeOptions, this.body)
-    Phaser.Display.Align.In.TopCenter(this.speedOptions, this.body, 0, -55)
+    Phaser.Display.Align.In.TopLeft(speedLabel, this.body, -30, -124)
+    Phaser.Display.Align.In.TopCenter(this.sizeOptions, this.body, 0, 10)
+    Phaser.Display.Align.In.TopCenter(this.speedOptions, this.body, 0, -85)
   }
 
   onShown ({ size, speed }) {

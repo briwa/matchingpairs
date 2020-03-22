@@ -2,6 +2,17 @@ import GameState from '../index'
 import { TestScheduler } from 'rxjs/testing'
 import { ReplaySubject } from 'rxjs'
 
+const mockedTiles = [
+  [{ value: 1, opened: false }, { value: 2, opened: false }],
+  [{ value: 2, opened: false }, { value: 1, opened: false }]
+]
+
+jest.mock('../helpers', () => {
+  return {
+    generateTiles: () => mockedTiles
+  }
+})
+
 const testScheduler = new TestScheduler((actual, expected) => {
   expect(actual).toEqual(expected)
 });
@@ -9,12 +20,6 @@ const testScheduler = new TestScheduler((actual, expected) => {
 describe('Game state', () => {
   test('Should work', () => {    
     testScheduler.run((helpers) => {
-      const mockedTiles = [
-        [{ value: 1, opened: false }, { value: 2, opened: false }],
-        [{ value: 2, opened: false }, { value: 1, opened: false }]
-      ]
-
-      jest.spyOn(GameState, 'generateTiles').mockReturnValueOnce(mockedTiles)
       const state = new GameState()
       
       const input = {

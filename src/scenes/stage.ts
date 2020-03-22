@@ -85,10 +85,10 @@ export default class Stage extends Phaser.Scene {
 
     while (allTiles.length > tilesCount - maxUniqueTilesCount) {
       let pairCount = 2
-      const randomTileIdx = Math.floor(Math.random() * (allTiles.length - 1))
+      const randomTileIdx = Math.floor(Math.random() * allTiles.length)
       const randomTile = allTiles[randomTileIdx]
       while (pairCount) {
-        const randomShuffledIdx = Math.floor(Math.random() * (tiles.length - 1))
+        const randomShuffledIdx = Math.floor(Math.random() * tiles.length)
         tiles.splice(randomShuffledIdx, 0, randomTile)
         pairCount--
       }

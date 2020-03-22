@@ -20,30 +20,68 @@ const testScheduler = new TestScheduler((actual, expected) => {
 describe('Game state', () => {
   test('Should work', () => {    
     testScheduler.run((helpers) => {
-      const initialState = {
-        settings: { width: 2, height: 2, maxTilesCount: 5, closedTileValue: 'x' },
-        tiles: []
-      }
-
-      const state = new GameState(initialState)
+      const state = new GameState()
       const input = {
         a: {
-          type: 'generate-tiles'
-        }
-      }
-      const output = {
-        o: {
-          settings: initialState.settings,
-          tiles: []
+          type: 'update-settings',
+          value: {
+            width: 2,
+            height: 2,
+            maxTilesCount: 10,
+            closedTileValue: '?'
+          }
         },
-        a: {
-          settings: initialState.settings,
-          tiles: mockedTiles
+        b: {
+          type: 'generate-tiles'
+        },
+        c: {
+          type: 'toggle-tile',
+          value: {
+            x: 0,
+            y: 1
+          }
         }
       }
 
-      const inputMarbles  = '---a---'
-      const outputMarbles = 'o--a---'
+      const output = {
+        o: GameState.INITIAL_STATE,
+        a: {
+          settings: {
+            width: 2,
+            height: 2,
+            maxTilesCount: 10,
+            closedTileValue: '?'
+          },
+          lastOpenedTile: null,
+          tiles: []
+        },
+        b: {
+          settings: {
+            width: 2,
+            height: 2,
+            maxTilesCount: 10,
+            closedTileValue: '?'
+          },
+          lastOpenedTile: null,
+          tiles: mockedTiles
+        },
+        c: {
+          settings: {
+            width: 2,
+            height: 2,
+            maxTilesCount: 10,
+            closedTileValue: '?'
+          },
+          lastOpenedTile: null,
+          tiles: [
+            [{ value: 1, opened: false }, { value: 2, opened: true }],
+            [{ value: 2, opened: false }, { value: 1, opened: false }]
+          ],
+        }
+      }
+
+      const inputMarbles  = '--a-b-c'
+      const outputMarbles = 'o-a-b-c'
 
       const input$ = helpers.hot(inputMarbles, input)
       input$.subscribe((intent) => state.emit(intent))

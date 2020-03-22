@@ -15,6 +15,7 @@ export default class GameState {
       maxTilesCount: 0,
       closedTileValue: 'x'
     },
+    lastOpenedTile: null,
     tiles: []
   }
   private input$: ReplaySubject<Intent>

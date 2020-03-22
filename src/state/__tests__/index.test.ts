@@ -1,12 +1,10 @@
-import GameState from '../index'
 import { TestScheduler } from 'rxjs/testing'
 import { ReplaySubject } from 'rxjs'
 
-const mockedTiles = [
-  [{ value: 1, opened: false }, { value: 2, opened: false }],
-  [{ value: 2, opened: false }, { value: 1, opened: false }]
-]
+import GameState from '../index'
+import { INITIAL_STATE } from '../model'
 
+const mockedTiles = [[1, 2], [2, 1]]
 jest.mock('../helpers', () => {
   return {
     generateTiles: () => mockedTiles
@@ -15,7 +13,7 @@ jest.mock('../helpers', () => {
 
 const testScheduler = new TestScheduler((actual, expected) => {
   expect(actual).toEqual(expected)
-});
+})
 
 describe('Game state', () => {
   test('Should work', () => {    
@@ -35,16 +33,23 @@ describe('Game state', () => {
           type: 'generate-tiles'
         },
         c: {
-          type: 'toggle-tile',
+          type: 'open-tile',
           value: {
             x: 0,
+            y: 1
+          }
+        },
+        d: {
+          type: 'open-tile',
+          value: {
+            x: 1,
             y: 1
           }
         }
       }
 
       const output = {
-        o: GameState.INITIAL_STATE,
+        o: INITIAL_STATE,
         a: {
           settings: {
             width: 2,
@@ -52,8 +57,8 @@ describe('Game state', () => {
             maxTilesCount: 10,
             closedTileValue: '?'
           },
-          lastOpenedTile: null,
-          tiles: []
+          tiles: INITIAL_STATE.tiles,
+          openedTiles: INITIAL_STATE.openedTiles
         },
         b: {
           settings: {
@@ -62,8 +67,8 @@ describe('Game state', () => {
             maxTilesCount: 10,
             closedTileValue: '?'
           },
-          lastOpenedTile: null,
-          tiles: mockedTiles
+          tiles: mockedTiles,
+          openedTiles: INITIAL_STATE.openedTiles
         },
         c: {
           settings: {
@@ -72,16 +77,37 @@ describe('Game state', () => {
             maxTilesCount: 10,
             closedTileValue: '?'
           },
-          lastOpenedTile: null,
-          tiles: [
-            [{ value: 1, opened: false }, { value: 2, opened: true }],
-            [{ value: 2, opened: false }, { value: 1, opened: false }]
-          ],
+          tiles: mockedTiles,
+          openedTiles: [
+            [{ x: 0, y: 1, value: 2 }]
+          ]
+        },
+        d: {
+          settings: {
+            width: 2,
+            height: 2,
+            maxTilesCount: 10,
+            closedTileValue: '?'
+          },
+          tiles: mockedTiles,
+          openedTiles: [
+            [{ x: 0, y: 1, value: 2 }, { x: 1, y: 1, value: 1 }]
+          ]
+        },
+        e: {
+          settings: {
+            width: 2,
+            height: 2,
+            maxTilesCount: 10,
+            closedTileValue: '?'
+          },
+          tiles: mockedTiles,
+          openedTiles: []
         }
       }
 
-      const inputMarbles  = '--a-b-c'
-      const outputMarbles = 'o-a-b-c'
+      const inputMarbles  = '--a-b-c-d--'
+      const outputMarbles = 'o-a-b-c-(de)--'
 
       const input$ = helpers.hot(inputMarbles, input)
       input$.subscribe((intent) => state.emit(intent))

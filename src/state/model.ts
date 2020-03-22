@@ -1,9 +1,15 @@
-import { merge, Observable } from 'rxjs'
-import { filter, map, mapTo, scan, startWith, share } from 'rxjs/operators'
-import { assocPath } from 'ramda'
+import { merge, Observable, BehaviorSubject } from 'rxjs'
+import { filter, map, mapTo, scan, startWith, publishReplay, refCount } from 'rxjs/operators'
+import { assocPath, propEq, append, remove } from 'ramda'
 
 import { generateTiles } from './helpers'
 import { Intent } from './index'
+
+interface Tile {
+  value: number
+  x: number
+  y: number
+}
 
 export interface State {
   settings: {
@@ -12,18 +18,26 @@ export interface State {
     maxTilesCount: number
     closedTileValue: string | number
   }
-  lastOpenedTile: {
-    x: number,
-    y: number
-  } | null
-  tiles: { opened: boolean, value: number }[][]
+  tiles: number[][]
+  openedTiles: Tile[][]
 }
 
 type Reducer = (state: State) => State
 
-export function model (intent$: Observable<Intent>, initialState: State) {
+export const INITIAL_STATE: State = {
+  settings: {
+    width: 0,
+    height: 0,
+    maxTilesCount: 0,
+    closedTileValue: 'x'
+  },
+  tiles: [],
+  openedTiles: [[]]
+}
+
+export function model (intent$: Observable<Intent>, customState: Partial<State>) {
   const createTileReducer$ = intent$.pipe(
-    filter((intent) => intent.type === 'generate-tiles'),
+    filter(propEq('type', 'generate-tiles')),
     mapTo<Intent, Reducer>(function createTileReducer (state) {
       const { width, height, maxTilesCount } = state.settings
 
@@ -35,7 +49,7 @@ export function model (intent$: Observable<Intent>, initialState: State) {
   )
 
   const updateSettingsReducer$ = intent$.pipe(
-    filter((intent) => intent.type === 'update-settings'),
+    filter(propEq('type', 'update-settings')),
     map<Intent<Partial<State['settings']>>, Reducer>((intent) => function updateSettingsReducer (state) {
       return {
         ...state,
@@ -48,13 +62,40 @@ export function model (intent$: Observable<Intent>, initialState: State) {
   )
 
   const openTileReducer$ = intent$.pipe(
-    filter((intent) => intent.type === 'toggle-tile'),
+    filter(propEq('type', 'open-tile')),
     map<Intent<{ x: number, y: number}>, Reducer>((intent) => function openTileReducer (state) {
-      const tile = state.tiles[intent.value.x][intent.value.y]
+      const tileNumber = state.tiles[intent.value.y][intent.value.x]
+      const tile = {
+        value: tileNumber,
+        x: intent.value.x,
+        y: intent.value.y
+      }
+
+      const lastOpenedPair = state.openedTiles[state.openedTiles.length - 1]
+      if (lastOpenedPair && lastOpenedPair.length === 2) {
+        return {
+          ...state,
+          openedTiles: append([tile], state.openedTiles)
+        }
+      }
 
       return {
         ...state,
-        tiles: assocPath([intent.value.x, intent.value.y], { value: tile.value, opened: !tile.opened }, state.tiles)
+        openedTiles: assocPath(
+          [state.openedTiles.length - 1],
+          append(tile, state.openedTiles[state.openedTiles.length - 1]),
+          state.openedTiles
+        )
+      }
+    })
+  )
+
+  const closeLastTileReducer$ = intent$.pipe(
+    filter(propEq('type', 'close-last-tiles')),
+    mapTo<Intent, Reducer>(function closeLastTileReducer (state) {
+      return {
+        ...state,
+        openedTiles: remove(-1, 1, state.openedTiles)
       }
     })
   )
@@ -62,10 +103,17 @@ export function model (intent$: Observable<Intent>, initialState: State) {
   return merge(
     createTileReducer$,
     updateSettingsReducer$,
-    openTileReducer$
+    openTileReducer$,
+    closeLastTileReducer$
   ).pipe(
-    startWith(initialState),
+    startWith({
+      ...INITIAL_STATE,
+      ...customState
+    }),
     scan<Reducer, State>((state, reducer) => reducer(state)),
-    share()
+    // Publish replay and refcount is needed
+    // to remember the last value and allow multicasts
+    publishReplay(1),
+    refCount()
   )
 }

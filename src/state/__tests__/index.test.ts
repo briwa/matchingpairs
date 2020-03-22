@@ -20,24 +20,24 @@ const testScheduler = new TestScheduler((actual, expected) => {
 describe('Game state', () => {
   test('Should work', () => {    
     testScheduler.run((helpers) => {
-      const state = new GameState()
-      
-      const input = {
-        a: {
-          type: 'init',
-          value: {
-            width: 2,
-            height: 2,
-            maxTilesCount: 5
-          }
-        }
+      const initialState = {
+        settings: { width: 2, height: 2, maxTilesCount: 5, closedTileValue: 'x' },
+        tiles: []
       }
 
+      const state = new GameState(initialState)
+      const input = {
+        a: {
+          type: 'generate-tiles'
+        }
+      }
       const output = {
         o: {
+          settings: initialState.settings,
           tiles: []
         },
         a: {
+          settings: initialState.settings,
           tiles: mockedTiles
         }
       }

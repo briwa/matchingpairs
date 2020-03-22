@@ -5,7 +5,7 @@ import LevelMain from '../levels/main'
 export default class Stage extends Phaser.Scene {
   private static readonly MARGIN = 20
   private static readonly TILESIZE = 64
-  private static readonly LAST_FRAME = 91
+  private static readonly LAST_FRAME = 99
   private level: LevelMain
   private size: number
   private speed: number
@@ -78,17 +78,17 @@ export default class Stage extends Phaser.Scene {
       this.group = this.add.group()
     }
 
-    const tilesCount = Stage.LAST_FRAME - 1
+    const tilesCount = Stage.LAST_FRAME
     const tiles = []
     const allTiles = Array.from({length: tilesCount}, (v, i) => i)
     const maxUniqueTilesCount = Math.pow(this.size, 2) / 2
 
     while (allTiles.length > tilesCount - maxUniqueTilesCount) {
       let pairCount = 2
-      const randomTileIdx = Math.floor(Math.random() * allTiles.length - 1)
+      const randomTileIdx = Math.floor(Math.random() * (allTiles.length - 1))
       const randomTile = allTiles[randomTileIdx]
       while (pairCount) {
-        const randomShuffledIdx = Math.floor(Math.random() * tiles.length - 1)
+        const randomShuffledIdx = Math.floor(Math.random() * (tiles.length - 1))
         tiles.splice(randomShuffledIdx, 0, randomTile)
         pairCount--
       }

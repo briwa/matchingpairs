@@ -84,6 +84,10 @@ export default class UI extends Phaser.Scene {
       this.timer.remove()
     }
 
+    if (!this.speed) {
+      return
+    }
+
     const totalTime = (this.maxScore - (this.score * 2)) * this.speed
     this.timer = this.time.delayedCall(totalTime, () => {
       this.modal.events.emit('show', {

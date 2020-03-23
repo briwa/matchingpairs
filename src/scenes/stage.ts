@@ -1,4 +1,5 @@
-import Phaser from 'phaser'
+import * as Phaser from 'phaser'
+
 import Game from '../index'
 import LevelMain from '../levels/main'
 

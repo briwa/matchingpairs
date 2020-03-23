@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import * as Phaser from 'phaser'
 import Game from '../index'
 import Button from '../objects/button'
 

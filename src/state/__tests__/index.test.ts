@@ -16,10 +16,10 @@ const testScheduler = new TestScheduler((actual, expected) => {
 })
 
 describe('Game state', () => {
-  test('Should work', () => {    
+  test('Should work', (done) => {
     testScheduler.run((helpers) => {
       const state = new GameState()
-      const input = {
+      const intentValues = {
         a: {
           type: 'update-settings',
           value: {
@@ -45,10 +45,25 @@ describe('Game state', () => {
             x: 1,
             y: 1
           }
+        },
+        e: {
+          type: 'close-last-tiles',
+          value: [
+            { x: 0, y: 1, value: 2 },
+            { x: 1, y: 1, value: 1 }
+          ]
+        },
+        f: {
+          type: 'disable-input',
+          value: [{ x: 0, y: 1, value: 2 }, { x: 1, y: 1, value: 1 }]
+        },
+        g: {
+          type: 'enable-input',
+          value: [{ x: 0, y: 1, value: 2 }, { x: 1, y: 1, value: 1 }]
         }
       }
 
-      const output = {
+      const outputStateValues = {
         o: INITIAL_STATE,
         a: {
           settings: {
@@ -106,18 +121,24 @@ describe('Game state', () => {
         }
       }
 
-      const inputMarbles  = '--a-b-c-d--'
-      const outputMarbles = 'o-a-b-c-(de)--'
+      const input          = '--a-b-c-d---------'
+      const outputState    = 'o-a-b-c-d 1999ms e'
+      const observedIntent = '--a-b-c-(fd) 1996ms (eg)'
 
-      const input$ = helpers.hot(inputMarbles, input)
+      const input$ = helpers.hot(input, intentValues)
       input$.subscribe((intent) => state.emit(intent))
-      
+
       // This is a replay subject because it needs to remember
       // the first value that is given.
-      const output$ = new ReplaySubject()
-      state.on((value) => output$.next(value))
+      const outputState$ = new ReplaySubject()
+      state.on('state', (value) => outputState$.next(value))
 
-      helpers.expectObservable(output$).toBe(outputMarbles, output)
+      const observedIntent$ = new ReplaySubject()
+      state.on('intent', (value) => observedIntent$.next(value))
+
+      helpers.expectObservable(outputState$).toBe(outputState, outputStateValues)
+      helpers.expectObservable(observedIntent$).toBe(observedIntent, intentValues)
+      done()
     })
   })
 })

@@ -1,4 +1,4 @@
-import { merge, Observable, BehaviorSubject } from 'rxjs'
+import { merge, Observable } from 'rxjs'
 import { filter, map, mapTo, scan, startWith, publishReplay, refCount } from 'rxjs/operators'
 import { assocPath, propEq, append, remove } from 'ramda'
 

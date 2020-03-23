@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import * as Phaser from 'phaser'
 
 export default class GameState extends Phaser.Plugins.BasePlugin {
   public hey = 'whatsup'

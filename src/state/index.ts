@@ -20,8 +20,8 @@ export default class GameState {
     this.view$ = validate(this.state$, this.intent$)
   }
 
-  emit (intent: Intent) {
-    this.intent$.next(intent)
+  emit (type: string, value: any) {
+    this.intent$.next({ type, value })
   }
 
   on (type: string, callback: (params: any) => void) {
@@ -63,5 +63,9 @@ export default class GameState {
         break
       }
     }
+  }
+
+  run () {
+    
   }
 }

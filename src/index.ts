@@ -8,6 +8,9 @@ import ModalGeneric from './scenes/modals/generic'
 import ModalSettings from './scenes/modals/settings'
 import ModalCredits from './scenes/modals/credits'
 
+import GameState from './state'
+const state = new GameState()
+
 export default class Game extends Phaser.Game {
   public static readonly CANVAS_WIDTH = 480
   public static readonly CANVAS_HEIGHT = 640

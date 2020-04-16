@@ -64,19 +64,6 @@ export default class Home extends Phaser.Scene {
       })
     })
 
-    buttonSettings.on('pointerdown', () => {
-      this.scene.get('ModalSettings').events.emit('show', this.settings)
-    })
-
-    footerText.on('pointerdown', () => {
-      this.scene.get('ModalCredits').events.emit('show')
-    })
-
-    this.scene.get('ModalSettings').events.on('ok', ({ size, speed }) => {
-      this.settings.size = size
-      this.settings.speed = speed
-    })
-
     cont.add([heroCont, logoCont, title, buttonPlay, buttonSettings])
     Phaser.Display.Align.In.Center(cont, titleZone)
     Phaser.Display.Align.In.Center(buttonPlay, logoCont, -buttonPlay.width / 2, (logoHeight / 2) + 20)

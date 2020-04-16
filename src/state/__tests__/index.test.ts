@@ -1,5 +1,5 @@
 import { TestScheduler } from 'rxjs/testing'
-import { ReplaySubject } from 'rxjs'
+import { ReplaySubject, Observable } from 'rxjs'
 
 import GameState from '../index'
 import { INITIAL_STATE } from '../model'
@@ -125,8 +125,8 @@ describe('Game state', () => {
       const outputState    = 'o-a-b-c-d 1999ms e'
       const observedIntent = '--a-b-c-(fd) 1996ms (eg)'
 
-      const input$ = helpers.hot(input, intentValues)
-      input$.subscribe((intent) => state.emit(intent))
+      const input$: Observable<{ type: string, value?: any }> = helpers.hot(input, intentValues)
+      input$.subscribe((intent) => state.emit(intent.type, intent.value))
 
       // This is a replay subject because it needs to remember
       // the first value that is given.

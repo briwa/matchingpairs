@@ -49,7 +49,7 @@ export default class Home extends Phaser.Scene {
       size: 'md'
     })
 
-    const footerText = this.add.text(0, 0, `v${appVersion} \u00b7 Made by Briwa \u00b7 Tap to see credits.`, {
+    const footerText = this.add.text(0, 0, `v${appVersion} \u00b7 github.com/briwa \u00b7 Tap to see credits.`, {
       fontFamily: 'Maven Pro',
       fontSize: '10px',
       align: 'center',
